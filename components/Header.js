@@ -1,5 +1,5 @@
 // import { useState } from 'react';
-import Link from 'next/link';
+// import Link from 'next/link';
 import styled from 'styled-components';
 import Icon from './Icon';
 
@@ -19,9 +19,8 @@ function Header() {
                     <SearchInput />
                     <ShoppingCart>
                         <VisuallyHidden>Open Cart</VisuallyHidden>
-                        <Link href='/cart'>
-                            <Icon id='shopping-cart' />
-                        </Link>
+
+                        <Icon id='shopping-cart' />
                     </ShoppingCart>
                 </Actions>
             </MainHeader>
