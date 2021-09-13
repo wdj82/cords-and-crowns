@@ -35,7 +35,6 @@ const MainHeader = styled.header`
     align-items: center;
     padding: 18px 32px;
     border-bottom: 1px solid var(--gray-300);
-    border-top: 4px solid var(--gray-900);
 `;
 
 const Actions = styled.div`

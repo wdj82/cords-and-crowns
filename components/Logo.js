@@ -1,10 +1,13 @@
 import Link from 'next/link';
 import styled from 'styled-components';
+import UnstyledButton from './UnstyledButton';
 
 function Logo() {
     return (
         <Link href='/'>
-            <Wrapper>Cords&amp;Crowns</Wrapper>
+            <UnstyledButton>
+                <Wrapper>Cords&amp;Crowns</Wrapper>
+            </UnstyledButton>
         </Link>
     );
 }

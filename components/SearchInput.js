@@ -24,6 +24,7 @@ const Label = styled.label`
 `;
 
 const TextInput = styled.input`
+    background: transparent;
     height: 2.25rem;
     font-size: 0.875rem;
     border: none;
