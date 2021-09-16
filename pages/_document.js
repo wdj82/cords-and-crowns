@@ -1,7 +1,7 @@
 import Document, { Html, Head, NextScript, Main } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 
-export default class MyDocument extends Document {
+class MyDocument extends Document {
     // boilerplate code from styled-components to get it working with next.js
     static async getInitialProps(ctx) {
         const sheet = new ServerStyleSheet();
@@ -40,3 +40,5 @@ export default class MyDocument extends Document {
         );
     }
 }
+
+export default MyDocument;

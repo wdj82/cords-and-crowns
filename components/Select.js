@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Icon from './Icon';
 
-const Select = ({ label, value, children, ...delegated }) => {
+function Select({ label, value, children, ...delegated }) {
     const childArray = React.Children.toArray(children);
     const selectedChild = childArray.find((child) => child.props.value === value);
 
@@ -23,7 +23,7 @@ const Select = ({ label, value, children, ...delegated }) => {
             </SelectWrapper>
         </Wrapper>
     );
-};
+}
 
 const Wrapper = styled.label`
     display: flex;
