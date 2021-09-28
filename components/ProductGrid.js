@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 
-import SHOES from '../data';
+import { SKULLS } from '../data';
 import ProductCard from './ProductCard';
 
 function ProductGrid() {
     return (
         <Wrapper>
-            {SHOES.map((shoe) => (
-                <div key={shoe.slug}>
-                    <ProductCard {...shoe} />
+            {SKULLS.map((skull) => (
+                <div key={skull.name}>
+                    <ProductCard {...skull} />
                 </div>
             ))}
         </Wrapper>
