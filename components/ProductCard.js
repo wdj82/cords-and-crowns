@@ -1,25 +1,31 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 
-function formatePrice(price) {
-    return `$${price / 100}`;
-}
+import formatMoney from '../util/formatMoney';
 
-function ProductCard({ name, imageSrc, price }) {
+function ProductCard({ id, name, photo, price }) {
     return (
-        <article>
-            <Image src={imageSrc} alt='' />
-            <Row>
-                <p>{name}</p>
-                <p>{formatePrice(price)}</p>
-            </Row>
-        </article>
+        <Link href={`/product/${id}`}>
+            <Wrapper>
+                <Image src={photo[0]?.image?.publicUrlTransformed} alt={photo[0]?.altText} />
+                <Row>
+                    <p>{name}</p>
+                    <p>{formatMoney(price)}</p>
+                </Row>
+            </Wrapper>
+        </Link>
     );
 }
+
+const Wrapper = styled.article`
+    cursor: pointer;
+`;
 
 const Image = styled.img`
     border-radius: 16px 16px 4px 4px;
     display: block;
     width: 100%;
+    cursor: pointer;
 `;
 
 const Row = styled.div`
