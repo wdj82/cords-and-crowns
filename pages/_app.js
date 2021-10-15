@@ -30,13 +30,13 @@ function MyApp({ Component, pageProps }) {
     return (
         // <ApolloProvider client={apollo}>
         <QueryClientProvider client={queryClient}>
-            <GlobalStyles />
-            <Page>
-                <Hydrate state={pageProps.dehydratedState}>
+            <Hydrate state={pageProps.dehydratedState}>
+                <GlobalStyles />
+                <Page>
                     <Component {...pageProps} />
-                </Hydrate>
-            </Page>
-            <ReactQueryDevtools />
+                </Page>
+                <ReactQueryDevtools />
+            </Hydrate>
         </QueryClientProvider>
         // </ApolloProvider>
     );

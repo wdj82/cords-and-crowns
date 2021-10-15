@@ -1,13 +1,17 @@
+import Head from 'next/head';
 import { QueryClient, dehydrate } from 'react-query';
 import styled from 'styled-components';
 
 import ProductGrid from '../components/ProductGrid';
 import Select from '../components/Select';
-import getProducts from '../util/gqlUtil';
+import { getProducts } from '../util/gqlUtil';
 
 function ProductsPage() {
     return (
         <Wrapper>
+            <Head>
+                <title>Cords&amp;Crowns</title>
+            </Head>
             <MainColumn>
                 <Header>
                     <div>
@@ -32,7 +36,7 @@ function ProductsPage() {
 export async function getStaticProps() {
     const queryClient = new QueryClient();
 
-    await queryClient.prefetchQuery('products', getProducts());
+    await queryClient.prefetchQuery('products', () => getProducts());
     return {
         props: {
             dehydratedState: dehydrate(queryClient),

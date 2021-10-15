@@ -1,11 +1,11 @@
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
-import getProducts from '../util/gqlUtil';
+import { getProducts } from '../util/gqlUtil';
 import ProductCard from './ProductCard';
 
 function ProductGrid() {
-    const { data, error, isLoading } = useQuery('products', getProducts, { staleTime: 30000 });
+    const { data, error, isLoading } = useQuery('products', () => getProducts, { staleTime: 30000 });
 
     //  TODO: Make loading component
     if (isLoading) return <p>Loading...</p>;
@@ -13,6 +13,7 @@ function ProductGrid() {
 
     const SKULLS = data?.allProducts;
     // console.log(SKULLS);
+
     return (
         <Wrapper>
             {SKULLS.map((skull) => (

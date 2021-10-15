@@ -19,8 +19,30 @@ const ALL_PRODUCTS_QUERY = gql`
     }
 `;
 
+const SINGLE_ITEM_QUERY = gql`
+    query SINGLE_ITEM_QUERY($id: ID!) {
+        Product(where: { id: $id }) {
+            name
+            price
+            description
+            id
+            photo {
+                altText
+                image {
+                    publicUrlTransformed
+                }
+            }
+        }
+    }
+`;
+
 async function getProducts() {
     return request(endpoint, ALL_PRODUCTS_QUERY);
 }
 
-export default getProducts;
+async function getProduct(id) {
+    const response = await request(endpoint, SINGLE_ITEM_QUERY, { id });
+    return response;
+}
+
+export { getProducts, getProduct };
