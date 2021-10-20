@@ -5,7 +5,7 @@ import { getProducts } from '../util/gqlUtil';
 import ProductCard from './ProductCard';
 
 function ProductGrid() {
-    const { data, error, isLoading } = useQuery('products', () => getProducts, { staleTime: 30000 });
+    const { data, error, isLoading } = useQuery('products', () => getProducts());
 
     //  TODO: Make loading component
     if (isLoading) return <p>Loading...</p>;

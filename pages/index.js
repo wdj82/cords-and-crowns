@@ -17,7 +17,6 @@ function ProductsPage() {
                     <div>
                         <Title>Skulls</Title>
                     </div>
-
                     <SortFilterWrapper>
                         <Select label='Sort' value='newest'>
                             <option value='newest'>Newest Releases</option>

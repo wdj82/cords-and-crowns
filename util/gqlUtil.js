@@ -29,6 +29,7 @@ const SINGLE_ITEM_QUERY = gql`
             photo {
                 altText
                 image {
+                    id
                     publicUrlTransformed
                 }
             }
