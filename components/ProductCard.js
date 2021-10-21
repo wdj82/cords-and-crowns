@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styled from 'styled-components';
 
 import formatMoney from '../util/formatMoney';
@@ -7,7 +8,12 @@ function ProductCard({ id, name, photo, price }) {
     return (
         <Link href={`/product/${id}`}>
             <Wrapper>
-                <Image src={photo[0]?.image?.publicUrlTransformed} alt={photo[0]?.altText} />
+                <ProductImage
+                    src={photo[0]?.image?.publicUrlTransformed}
+                    alt={photo[0]?.altText}
+                    width={500}
+                    height={375}
+                />
                 <Row>
                     <p>{name}</p>
                     <p>{formatMoney(price)}</p>
@@ -21,7 +27,7 @@ const Wrapper = styled.article`
     cursor: pointer;
 `;
 
-const Image = styled.img`
+const ProductImage = styled(Image)`
     border-radius: 16px 16px 4px 4px;
     display: block;
     width: 100%;

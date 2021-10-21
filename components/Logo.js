@@ -6,7 +6,7 @@ function Logo() {
     return (
         <Link href='/'>
             <UnstyledButton>
-                <Wrapper>Cords&amp;Crowns</Wrapper>
+                <Wrapper>Cords and Crowns</Wrapper>
             </UnstyledButton>
         </Link>
     );
