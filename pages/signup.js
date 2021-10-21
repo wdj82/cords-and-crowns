@@ -1,45 +1,50 @@
-import { useState } from 'react';
 import { useQueryClient, useMutation } from 'react-query';
+import { useRouter } from 'next/router';
 
-import { signInMutation } from '../util/gqlUtil';
+import { signUpMutation } from '../util/gqlUtil';
 import useForm from '../util/useForm';
 
-function SignIn() {
+function SignUpPage() {
     const queryClient = useQueryClient();
+    const router = useRouter();
 
-    const [failureMessage, setFailureMessage] = useState('');
     const { inputs, handleChange, resetForm } = useForm({
         email: '',
         password: '',
     });
 
-    const mutation = useMutation(signInMutation, {
+    const mutation = useMutation(signUpMutation, {
         onSuccess: (data) => {
-            if (data.authenticateUserWithPassword.message) {
-                setFailureMessage(data.authenticateUserWithPassword.message);
-            } else {
-                queryClient.setQueryData('user', {
-                    authenticatedItem: data.authenticateUserWithPassword.item,
-                });
-            }
+            console.log(data);
+            queryClient.setQueryData('user', {
+                authenticatedItem: data.createUser,
+            });
+            router.push('/account');
+            // if (data.authenticateUserWithPassword.message) {
+            //     setFailureMessage(data.authenticateUserWithPassword.message);
+            // } else {
+            //     queryClient.setQueryData('user', {
+            //         authenticatedItem: data.authenticateUserWithPassword.item,
+            //     });
+            // }
         },
     });
 
     function handleSubmit(e) {
         e.preventDefault();
-        mutation.mutate(inputs);
+        try {
+            mutation.mutate(inputs);
+        } catch (error) {
+            console.error('was an error');
+        }
         resetForm();
-    }
-
-    if (mutation.isError) {
-        return <div>Error: {mutation.error}</div>;
     }
 
     return (
         <form method='POST' onSubmit={handleSubmit}>
             {mutation.isLoading && <div>Loading...</div>}
-            {failureMessage && <div>Your email or your password was not correct</div>}
-            <h2>Sign Into Your Account</h2>
+            {mutation.isError && <div>Error creating new account</div>}
+            <h2>Create a new account</h2>
             <fieldset>
                 <label htmlFor='email'>
                     Email
@@ -50,10 +55,11 @@ function SignIn() {
                         autoComplete='email'
                         value={inputs.email}
                         onChange={handleChange}
+                        required
                     />
                 </label>
                 <label htmlFor='password'>
-                    Password
+                    Password (min 8 characters)
                     <input
                         type='password'
                         name='password'
@@ -61,12 +67,14 @@ function SignIn() {
                         autoComplete='password'
                         value={inputs.password}
                         onChange={handleChange}
+                        required
+                        minLength='8'
                     />
                 </label>
-                <button type='submit'>Sign In</button>
+                <button type='submit'>Sign Up</button>
             </fieldset>
         </form>
     );
 }
 
-export default SignIn;
+export default SignUpPage;

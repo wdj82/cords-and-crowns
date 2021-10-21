@@ -43,7 +43,6 @@ const CURRENT_USER_QUERY = gql`
             ... on User {
                 id
                 email
-                name
             }
         }
     }
@@ -56,13 +55,21 @@ const SIGN_IN_MUTATION = gql`
                 item {
                     id
                     email
-                    name
                 }
             }
             ... on UserAuthenticationWithPasswordFailure {
                 code
                 message
             }
+        }
+    }
+`;
+
+const SIGN_UP_MUTATION = gql`
+    mutation SIGN_UP_MUTATION($email: String!, $password: String!) {
+        createUser(data: { email: $email, password: $password }) {
+            id
+            email
         }
     }
 `;
@@ -93,4 +100,8 @@ async function signOutMutation() {
     return request(endpoint, SIGN_OUT_MUTATION);
 }
 
-export { getProducts, getProduct, getCurrentUser, signInMutation, signOutMutation };
+async function signUpMutation(variables) {
+    return request(endpoint, SIGN_UP_MUTATION, variables);
+}
+
+export { getProducts, getProduct, getCurrentUser, signInMutation, signOutMutation, signUpMutation };

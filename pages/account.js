@@ -1,7 +1,8 @@
+import Link from 'next/link';
 import { useQuery } from 'react-query';
+
 import SignIn from '../components/SignIn';
 import SignOut from '../components/SignOut';
-// import SignUp from '../components/SignUp';
 import { getCurrentUser } from '../util/gqlUtil';
 
 function AccountPage() {
@@ -19,7 +20,13 @@ function AccountPage() {
     }
 
     if (!data?.authenticatedItem) {
-        return <SignIn />;
+        return (
+            <div>
+                <SignIn />
+                <h2>Don&apos;t have an account?</h2>
+                <Link href='/signup'>Sign Up</Link>
+            </div>
+        );
     }
     return <SignOut />;
 }
