@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-import { Search, ShoppingCart, ChevronDown } from 'react-feather';
+import { Search, ShoppingCart, ChevronDown, User } from 'react-feather';
 
 const icons = {
     search: Search,
     'shopping-cart': ShoppingCart,
+    user: User,
     'chevron-down': ChevronDown,
 };
 

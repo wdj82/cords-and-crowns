@@ -17,11 +17,17 @@ function Header() {
                 <Logo />
                 <Actions>
                     <SearchInput />
+                    <Link href='/account'>
+                        <IconButton>
+                            <VisuallyHidden>Account</VisuallyHidden>
+                            <Icon id='user' />
+                        </IconButton>
+                    </Link>
                     <Link href='/cart' passHref>
-                        <ShoppingCart>
+                        <IconButton>
                             <VisuallyHidden>Open Cart</VisuallyHidden>
                             <Icon id='shopping-cart' />
-                        </ShoppingCart>
+                        </IconButton>
                     </Link>
                 </Actions>
             </MainHeader>
@@ -42,7 +48,7 @@ const Actions = styled.div`
     gap: 32px;
 `;
 
-const ShoppingCart = styled(UnstyledButton)`
+const IconButton = styled(UnstyledButton)`
     color: var(--gray-700);
 
     &:hover {
