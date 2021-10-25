@@ -18,6 +18,7 @@ function SignIn() {
             if (data.authenticateUserWithPassword.message) {
                 setFailureMessage(data.authenticateUserWithPassword.message);
             } else {
+                // console.log(data);
                 queryClient.setQueryData('user', {
                     authenticatedItem: data.authenticateUserWithPassword.item,
                 });

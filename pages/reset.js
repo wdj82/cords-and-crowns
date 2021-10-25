@@ -1,46 +1,52 @@
-import { useMutation } from 'react-query';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useMutation } from 'react-query';
 
-import { signUpMutation } from '../util/gqlUtil';
+import ResetPassword from '../components/ResetPassword';
+import { resetPasswordMutation } from '../util/gqlUtil';
 import useForm from '../util/useForm';
 
-function SignUpPage() {
-    // const queryClient = useQueryClient();
+function ResetPage() {
+    const [isPasswordReset, setIsPasswordReset] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const router = useRouter();
+    const { token } = router.query;
 
-    const { inputs, handleChange, resetForm } = useForm({
+    const { inputs, handleChange } = useForm({
         email: '',
         password: '',
     });
 
-    const mutation = useMutation(signUpMutation, {
-        onSuccess: () => {
-            // console.log(data);
-            // queryClient.setQueryData('user', {
-            //     authenticatedItem: data.createUser,
-            // });
-            router.push('/account');
-            // if (data.authenticateUserWithPassword.message) {
-            //     setFailureMessage(data.authenticateUserWithPassword.message);
-            // } else {
-            //     queryClient.setQueryData('user', {
-            //         authenticatedItem: data.authenticateUserWithPassword.item,
-            //     });
-            // }
+    const mutation = useMutation(resetPasswordMutation, {
+        onSuccess: (data) => {
+            if (data.redeemUserPasswordResetToken?.code) {
+                setErrorMessage('Error creating new password. Please try again.');
+            }
         },
     });
 
     function handleSubmit(e) {
         e.preventDefault();
-        mutation.mutate(inputs);
-        resetForm();
+        mutation.mutate({ ...inputs, token });
+        setIsPasswordReset(true);
     }
 
-    return (
+    if (mutation.isError) {
+        return <div>Server error - please try again</div>;
+    }
+
+    if (!token || errorMessage) {
+        return (
+            <>
+                <h2>{errorMessage}</h2>
+                <ResetPassword />
+            </>
+        );
+    }
+
+    const resetForm = (
         <form method='POST' onSubmit={handleSubmit}>
-            {mutation.isLoading && <div>Loading...</div>}
-            {mutation.isError && <div>Error creating new account</div>}
-            <h2>Create a new account</h2>
+            <h2>Enter New Password</h2>
             <fieldset>
                 <label htmlFor='email'>
                     Email
@@ -67,10 +73,12 @@ function SignUpPage() {
                         minLength='8'
                     />
                 </label>
-                <button type='submit'>Sign Up</button>
+                <button type='submit'>Reset Password</button>
             </fieldset>
         </form>
     );
+
+    return <div>{isPasswordReset ? <h2>You can now sign in with your new password</h2> : resetForm}</div>;
 }
 
-export default SignUpPage;
+export default ResetPage;

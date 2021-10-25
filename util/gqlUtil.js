@@ -52,6 +52,7 @@ const SIGN_IN_MUTATION = gql`
     mutation SIGN_IN_MUTATION($email: String!, $password: String!) {
         authenticateUserWithPassword(email: $email, password: $password) {
             ... on UserAuthenticationWithPasswordSuccess {
+                sessionToken
                 item {
                     id
                     email
@@ -80,6 +81,24 @@ const SIGN_OUT_MUTATION = gql`
     }
 `;
 
+const REQUEST_RESET_MUTATION = gql`
+    mutation REQUEST_RESET_MUTATION($email: String!) {
+        sendUserPasswordResetLink(email: $email) {
+            message
+            code
+        }
+    }
+`;
+
+const RESET_MUTATION = gql`
+    mutation RESET_MUTATION($email: String!, $token: String!, $password: String!) {
+        redeemUserPasswordResetToken(email: $email, token: $token, password: $password) {
+            message
+            code
+        }
+    }
+`;
+
 async function getProducts() {
     return request(endpoint, ALL_PRODUCTS_QUERY);
 }
@@ -104,4 +123,21 @@ async function signUpMutation(variables) {
     return request(endpoint, SIGN_UP_MUTATION, variables);
 }
 
-export { getProducts, getProduct, getCurrentUser, signInMutation, signOutMutation, signUpMutation };
+async function resetPasswordRequestMutation(variables) {
+    return request(endpoint, REQUEST_RESET_MUTATION, variables);
+}
+
+async function resetPasswordMutation(variables) {
+    return request(endpoint, RESET_MUTATION, variables);
+}
+
+export {
+    getProducts,
+    getProduct,
+    getCurrentUser,
+    signInMutation,
+    signOutMutation,
+    signUpMutation,
+    resetPasswordRequestMutation,
+    resetPasswordMutation,
+};
