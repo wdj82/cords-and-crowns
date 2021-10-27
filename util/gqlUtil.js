@@ -1,48 +1,55 @@
-import { gql, request } from 'graphql-request';
+import { gql, request, GraphQLClient } from 'graphql-request';
 import { endpoint } from '../config';
 
 const ALL_PRODUCTS_QUERY = gql`
     query ALL_PRODUCTS_QUERY {
-        allProducts {
-            id
+        products {
             name
             price
             description
-            photo {
-                id
-                altText
-                image {
-                    publicUrlTransformed
-                }
+            slug
+            images {
+                url
             }
         }
     }
 `;
 
 const SINGLE_ITEM_QUERY = gql`
-    query SINGLE_ITEM_QUERY($id: ID!) {
-        Product(where: { id: $id }) {
+    query SINGLE_ITEM_QUERY($slug: String!) {
+        product(where: { slug: $slug }) {
             name
             price
             description
-            id
-            photo {
-                altText
-                image {
-                    id
-                    publicUrlTransformed
-                }
+            images {
+                url
+                fileName
             }
         }
     }
 `;
 
 const CURRENT_USER_QUERY = gql`
-    query CURRENT_USER_QUERY {
+    query {
         authenticatedItem {
             ... on User {
                 id
                 email
+                cart {
+                    id
+                    quantity
+                    product {
+                        id
+                        name
+                        description
+                        price
+                        photo {
+                            image {
+                                publicUrlTransformed
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -103,16 +110,33 @@ async function getProducts() {
     return request(endpoint, ALL_PRODUCTS_QUERY);
 }
 
-async function getProduct(id) {
-    return request(endpoint, SINGLE_ITEM_QUERY, { id });
+async function getProduct(slug) {
+    return request(endpoint, SINGLE_ITEM_QUERY, { slug });
 }
 
 async function getCurrentUser() {
-    return request(endpoint, CURRENT_USER_QUERY);
+    const graphQLClient = new GraphQLClient(endpoint, {
+        headers: {
+            credentials: 'include',
+            mode: 'cors',
+        },
+    });
+    const res = await graphQLClient.request(CURRENT_USER_QUERY);
+    console.log(res);
+    return res;
 }
 
 async function signInMutation(variables) {
-    return request(endpoint, SIGN_IN_MUTATION, variables);
+    console.log(variables);
+    const graphQLClient = new GraphQLClient(endpoint, {
+        headers: {
+            credentials: 'include',
+            mode: 'cors',
+        },
+    });
+    const { data, headers } = await graphQLClient.rawRequest(SIGN_IN_MUTATION, variables);
+    console.log(headers);
+    return data;
 }
 
 async function signOutMutation() {

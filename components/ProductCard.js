@@ -4,16 +4,11 @@ import styled from 'styled-components';
 
 import formatMoney from '../util/formatMoney';
 
-function ProductCard({ id, name, photo, price }) {
+function ProductCard({ name, price, slug, images }) {
     return (
-        <Link href={`/product/${id}`}>
+        <Link href={`/product/${slug}`}>
             <Wrapper>
-                <ProductImage
-                    src={photo[0]?.image?.publicUrlTransformed}
-                    alt={photo[0]?.altText}
-                    width={500}
-                    height={375}
-                />
+                <ProductImage src={images[0]?.url} alt={name} width={500} height={375} />
                 <Row>
                     <p>{name}</p>
                     <p>{formatMoney(price)}</p>

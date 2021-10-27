@@ -15,12 +15,16 @@ function SignIn() {
 
     const mutation = useMutation(signInMutation, {
         onSuccess: (data) => {
+            console.log(data);
             if (data.authenticateUserWithPassword.message) {
                 setFailureMessage(data.authenticateUserWithPassword.message);
             } else {
-                // console.log(data);
+                const cookie = `keystonejs-session=${data.authenticateUserWithPassword.sessionToken}`;
+                console.log(cookie);
+                document.cookie = cookie;
                 queryClient.setQueryData('user', {
-                    authenticatedItem: data.authenticateUserWithPassword.item,
+                    id: data.authenticateUserWithPassword.item.id,
+                    email: data.authenticateUserWithPassword.item.email,
                 });
             }
         },
@@ -33,7 +37,7 @@ function SignIn() {
     }
 
     if (mutation.isError) {
-        return <div>Error: {mutation.error}</div>;
+        return <div>Error</div>;
     }
 
     return (

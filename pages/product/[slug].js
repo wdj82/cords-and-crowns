@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { getProduct, getProducts } from '../../util/gqlUtil';
 
 function SingleProductPage({ dehydratedState }) {
-    const { name, price, description, photo: photos } = dehydratedState.queries[0].state.data.Product;
+    const { name, price, description, images } = dehydratedState.queries[0].state.data.product;
     // const { id } = useRouter().query;
 
     return (
@@ -16,14 +16,8 @@ function SingleProductPage({ dehydratedState }) {
             <h1>{name}</h1>
             <p>{price}</p>
             <p>{description}</p>
-            {photos.map((photo) => (
-                <Image
-                    key={photo.altText}
-                    src={photo.image.publicUrlTransformed}
-                    alt={photo.altText}
-                    width={500}
-                    height={375}
-                />
+            {images.map((image) => (
+                <Image key={image.fileName} src={image.url} alt={name} width={500} height={375} />
             ))}
         </div>
     );
@@ -31,7 +25,7 @@ function SingleProductPage({ dehydratedState }) {
 
 export async function getStaticProps({ params }) {
     const queryClient = new QueryClient();
-    await queryClient.prefetchQuery(['product', params.id], () => getProduct(params.id));
+    await queryClient.prefetchQuery(['product', params.slug], () => getProduct(params.slug));
     return {
         props: {
             dehydratedState: dehydrate(queryClient),
@@ -41,12 +35,10 @@ export async function getStaticProps({ params }) {
 
 export async function getStaticPaths() {
     const queryClient = new QueryClient();
+    const data = await queryClient.fetchQuery('products', () => getProducts());
 
-    await queryClient.prefetchQuery('products', () => getProducts());
-    const data = queryClient.getQueryData('products');
-
-    const paths = data?.allProducts.map((product) => ({
-        params: { id: product.id },
+    const paths = data?.products.map((product) => ({
+        params: { slug: product.slug },
     }));
     return { paths, fallback: false };
 }

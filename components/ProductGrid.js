@@ -8,16 +8,16 @@ function ProductGrid() {
     const { data, error, isLoading } = useQuery('products', () => getProducts());
 
     //  TODO: Make loading component
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading || !data) return <p>Loading...</p>;
     if (error) return <p>ERROR: {error.message}</p>;
 
-    const SKULLS = data?.allProducts;
+    const SKULLS = data?.products;
     // console.log(SKULLS);
 
     return (
         <Wrapper>
             {SKULLS.map((skull) => (
-                <div key={skull.id}>
+                <div key={skull.slug}>
                     <ProductCard {...skull} />
                 </div>
             ))}

@@ -77,10 +77,12 @@ html {
     --gray-700: hsl(220deg 5% 40%);
     --gray-900: hsl(220deg 3% 20%);
 
+    --color-backdrop: hsl(220deg 5% 40% / 0.8);
+
     /*
         Silence the warning about missing Reach Dialog styles
-    */
     --reach-dialog: 1;
+    */
 }
 
 html, body, #root {

@@ -1,29 +1,32 @@
 import Link from 'next/link';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 
 import SignIn from '../components/SignIn';
 import SignOut from '../components/SignOut';
 import ResetPassword from '../components/ResetPassword';
 import { getCurrentUser } from '../util/gqlUtil';
 
-// TODO: Redo the layout so all sign in logic is handled here instead of separate pages
-
 function AccountPage() {
     const [showPasswordReset, setShowPasswordReset] = useState(false);
 
-    const { data, error, isLoading } = useQuery('user', () => getCurrentUser(), {
-        cacheTime: Infinity,
-        staleTime: Infinity,
-    });
+    // const { data, error, isLoading } = useQuery('user', () => getCurrentUser(), {
+    //     cacheTime: Infinity,
+    //     staleTime: Infinity,
+    // });
+    // console.log(data);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    // if (isLoading) {
+    //     return <div>Loading...</div>;
+    // }
 
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
+    // if (error) {
+    //     return <div>Error: {error}</div>;
+    // }
+
+    const queryClient = useQueryClient();
+    const data = queryClient.getQueryData('user');
+    console.log(data);
 
     if (showPasswordReset) {
         return (

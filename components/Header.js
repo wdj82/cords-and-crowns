@@ -1,15 +1,16 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
-import Icon from './Icon';
 
+import Cart from './Cart';
+import Icon from './Icon';
 import Logo from './Logo';
 import SearchInput from './SearchInput';
 import UnstyledButton from './UnstyledButton';
 import VisuallyHidden from './VisuallyHidden';
 
 function Header() {
-    // const [showMobileMenu, setShowMobileMenu] = useState(false);
+    const [showCart, setShowCart] = useState(false);
 
     return (
         <header>
@@ -23,14 +24,15 @@ function Header() {
                             <Icon id='user' />
                         </IconButton>
                     </Link>
-                    <Link href='/cart' passHref>
-                        <IconButton>
-                            <VisuallyHidden>Open Cart</VisuallyHidden>
-                            <Icon id='shopping-cart' />
-                        </IconButton>
-                    </Link>
+
+                    <IconButton onClick={() => setShowCart(true)}>
+                        <VisuallyHidden>Open Cart</VisuallyHidden>
+                        <Icon id='shopping-cart' />
+                    </IconButton>
                 </Actions>
             </MainHeader>
+
+            <Cart isOpen={showCart} onDismiss={() => setShowCart(false)} />
         </header>
     );
 }
