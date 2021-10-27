@@ -8,9 +8,17 @@ const ALL_PRODUCTS_QUERY = gql`
             price
             description
             slug
-            images {
+            images(first: 1) {
                 url
             }
+        }
+    }
+`;
+
+const ALL_SLUGS_QUERY = gql`
+    query ALL_SLUGS_QUERY {
+        products {
+            slug
         }
     }
 `;
@@ -110,6 +118,10 @@ async function getProducts() {
     return request(endpoint, ALL_PRODUCTS_QUERY);
 }
 
+async function getSlugs() {
+    return request(endpoint, ALL_SLUGS_QUERY);
+}
+
 async function getProduct(slug) {
     return request(endpoint, SINGLE_ITEM_QUERY, { slug });
 }
@@ -157,6 +169,7 @@ async function resetPasswordMutation(variables) {
 
 export {
     getProducts,
+    getSlugs,
     getProduct,
     getCurrentUser,
     signInMutation,

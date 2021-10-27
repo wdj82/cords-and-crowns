@@ -2,7 +2,7 @@ import { dehydrate, QueryClient } from 'react-query';
 import Head from 'next/head';
 import Image from 'next/image';
 
-import { getProduct, getProducts } from '../../util/gqlUtil';
+import { getProduct, getSlugs } from '../../util/gqlUtil';
 
 function SingleProductPage({ dehydratedState }) {
     const { name, price, description, images } = dehydratedState.queries[0].state.data.product;
@@ -35,7 +35,7 @@ export async function getStaticProps({ params }) {
 
 export async function getStaticPaths() {
     const queryClient = new QueryClient();
-    const data = await queryClient.fetchQuery('products', () => getProducts());
+    const data = await queryClient.fetchQuery('slugs', () => getSlugs());
 
     const paths = data?.products.map((product) => ({
         params: { slug: product.slug },
