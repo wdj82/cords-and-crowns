@@ -1,5 +1,4 @@
-import { gql, request, GraphQLClient } from 'graphql-request';
-import { endpoint } from '../config';
+import { gql, graphCMSClient } from './graphCMSClient';
 
 const ALL_PRODUCTS_QUERY = gql`
     query ALL_PRODUCTS_QUERY {
@@ -115,56 +114,39 @@ const RESET_MUTATION = gql`
 `;
 
 async function getProducts() {
-    return request(endpoint, ALL_PRODUCTS_QUERY);
+    return graphCMSClient.request(ALL_PRODUCTS_QUERY);
 }
 
 async function getSlugs() {
-    return request(endpoint, ALL_SLUGS_QUERY);
+    return graphCMSClient.request(ALL_SLUGS_QUERY);
 }
 
 async function getProduct(slug) {
-    return request(endpoint, SINGLE_ITEM_QUERY, { slug });
+    return graphCMSClient.request(SINGLE_ITEM_QUERY, { slug });
 }
 
 async function getCurrentUser() {
-    const graphQLClient = new GraphQLClient(endpoint, {
-        headers: {
-            credentials: 'include',
-            mode: 'cors',
-        },
-    });
-    const res = await graphQLClient.request(CURRENT_USER_QUERY);
-    console.log(res);
-    return res;
+    return graphCMSClient.request(CURRENT_USER_QUERY);
 }
 
 async function signInMutation(variables) {
-    console.log(variables);
-    const graphQLClient = new GraphQLClient(endpoint, {
-        headers: {
-            credentials: 'include',
-            mode: 'cors',
-        },
-    });
-    const { data, headers } = await graphQLClient.rawRequest(SIGN_IN_MUTATION, variables);
-    console.log(headers);
-    return data;
+    return graphCMSClient.request(SIGN_IN_MUTATION, variables);
 }
 
 async function signOutMutation() {
-    return request(endpoint, SIGN_OUT_MUTATION);
+    return graphCMSClient.request(SIGN_OUT_MUTATION);
 }
 
 async function signUpMutation(variables) {
-    return request(endpoint, SIGN_UP_MUTATION, variables);
+    return graphCMSClient.request(SIGN_UP_MUTATION, variables);
 }
 
 async function resetPasswordRequestMutation(variables) {
-    return request(endpoint, REQUEST_RESET_MUTATION, variables);
+    return graphCMSClient.request(REQUEST_RESET_MUTATION, variables);
 }
 
 async function resetPasswordMutation(variables) {
-    return request(endpoint, RESET_MUTATION, variables);
+    return graphCMSClient.request(RESET_MUTATION, variables);
 }
 
 export {
