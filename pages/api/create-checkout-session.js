@@ -34,6 +34,7 @@ export default async (req, res) => {
             },
         },
         quantity: 1,
+        tax_rates: ['txr_1Jq0OcIMF3sWfagh6AiM5SdD'],
     }));
 
     try {
@@ -42,6 +43,9 @@ export default async (req, res) => {
             cancel_url: `http://localhost:7777/`,
             mode: 'payment',
             payment_method_types: ['card'],
+            shipping_address_collection: {
+                allowed_countries: ['US'],
+            },
             line_items: lineItems,
         });
         res.json(session);

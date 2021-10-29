@@ -70,8 +70,7 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-    const queryClient = new QueryClient();
-    const data = await queryClient.fetchQuery('slugs', () => getSlugs());
+    const data = await getSlugs();
 
     const paths = data?.products.map((product) => ({
         params: { slug: product.slug },
