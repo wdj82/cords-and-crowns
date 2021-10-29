@@ -4,7 +4,7 @@ import { useMutation } from 'react-query';
 
 import ResetPassword from '../components/ResetPassword';
 import { resetPasswordMutation } from '../util/gqlUtil';
-import useForm from '../util/useForm';
+import useForm from '../hooks/useForm';
 
 function ResetPage() {
     const [isPasswordReset, setIsPasswordReset] = useState(false);

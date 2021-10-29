@@ -32,7 +32,7 @@ function Header() {
                 </Actions>
             </MainHeader>
 
-            <Cart isOpen={showCart} onDismiss={() => setShowCart(false)} />
+            {showCart && <Cart isOpen={showCart} onDismiss={() => setShowCart(false)} />}
         </header>
     );
 }

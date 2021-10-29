@@ -3,10 +3,11 @@ import Head from 'next/head';
 import Image from 'next/image';
 
 import { getProduct, getSlugs } from '../../util/gqlUtil';
+import { useCart } from '../../hooks/useCart';
 
 function SingleProductPage({ dehydratedState }) {
     const { name, price, description, images } = dehydratedState.queries[0].state.data.product;
-    // const { id } = useRouter().query;
+    const { addToCart } = useCart();
 
     return (
         <div>
@@ -19,6 +20,9 @@ function SingleProductPage({ dehydratedState }) {
             {images.map((image) => (
                 <Image key={image.fileName} src={image.url} alt={name} width={500} height={375} />
             ))}
+            <button type='button' onClick={() => addToCart({ name, price, image: images[0] })}>
+                Add to Cart
+            </button>
         </div>
     );
 }

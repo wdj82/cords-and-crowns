@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQueryClient, useMutation } from 'react-query';
 
 import { signInMutation } from '../util/gqlUtil';
-import useForm from '../util/useForm';
+import useForm from '../hooks/useForm';
 
 function SignIn() {
     const queryClient = useQueryClient();

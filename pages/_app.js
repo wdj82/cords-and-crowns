@@ -1,4 +1,3 @@
-// import { ApolloProvider } from '@apollo/client';
 import { useState } from 'react';
 import { QueryClient, QueryClientProvider, Hydrate } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -7,7 +6,7 @@ import Router from 'next/router';
 
 import GlobalStyles from '../components/GlobalStyles';
 import Page from '../components/Page';
-// import withData from '../util/withData';
+import { CartContext, useCartState } from '../hooks/useCart';
 
 import '../util/nprogress.css';
 
@@ -27,30 +26,21 @@ function MyApp({ Component, pageProps }) {
             }),
     );
 
+    const cart = useCartState();
+
     return (
-        // <ApolloProvider client={apollo}>
         <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps.dehydratedState}>
                 <GlobalStyles />
-                <Page>
-                    <Component {...pageProps} />
-                </Page>
+                <CartContext.Provider value={cart}>
+                    <Page>
+                        <Component {...pageProps} />
+                    </Page>
+                </CartContext.Provider>
                 <ReactQueryDevtools />
             </Hydrate>
         </QueryClientProvider>
-        // </ApolloProvider>
     );
 }
 
-// MyApp.getInitialProps = async ({ Component, ctx }) => {
-//     let pageProps = {};
-//     if (Component.getInitialProps) {
-//         pageProps = await Component.getInitialProps(ctx);
-//     }
-//     pageProps.query = ctx.query;
-//     return { pageProps };
-// };
-
 export default MyApp;
-
-// export default withData(MyApp);

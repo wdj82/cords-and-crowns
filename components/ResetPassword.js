@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation } from 'react-query';
 
 import { resetPasswordRequestMutation } from '../util/gqlUtil';
-import useForm from '../util/useForm';
+import useForm from '../hooks/useForm';
 
 function ResetPassword() {
     const [isEmailSent, setIsEmailSent] = useState(false);

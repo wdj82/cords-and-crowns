@@ -1,28 +1,16 @@
 import { DialogOverlay, DialogContent } from '@reach/dialog';
-import { useQuery, useQueryClient } from 'react-query';
 import styled, { keyframes } from 'styled-components';
-import { getCurrentUser } from '../util/gqlUtil';
 
 import Icon from './Icon';
 import UnstyledButton from './UnstyledButton';
 import VisuallyHidden from './VisuallyHidden';
+import { useCart } from '../hooks/useCart';
+import formatMoney from '../util/formatMoney';
 
 function Cart({ isOpen, onDismiss }) {
-    // const queryClient = useQueryClient();
-
-    if (isOpen) {
-        // const { token } = queryClient.getQueryData('user');
-        const { data, error, isLoading } = useQuery('signUser', () => getCurrentUser());
-
-        // const user = data?.authenticatedItem;
-        console.log(data);
-    }
-
-    // const signInRequest = (
-    //     <div>
-    //         Please
-    //     </div>
-    // )
+    const { cart, removeFromCart } = useCart();
+    const keys = Object.keys(cart);
+    let total = 0;
 
     return (
         <Overlay isOpen={isOpen} onDismiss={onDismiss}>
@@ -32,7 +20,27 @@ function Cart({ isOpen, onDismiss }) {
                     <VisuallyHidden>Close Shopping Cart</VisuallyHidden>
                     <Icon id='close' />
                 </UnstyledButton>
-                <h2>The Cart!!!</h2>
+                {keys.map((key) => {
+                    const { name, price } = cart[key];
+                    total += price;
+                    return (
+                        <div key={name}>
+                            <div>{name}</div>
+                            <div>{formatMoney(price)}</div>
+                            <button type='button' onClick={() => removeFromCart(name)}>
+                                Remove from Cart
+                            </button>
+                        </div>
+                    );
+                })}
+                {total > 0 ? (
+                    <div>
+                        <div>Total: {formatMoney(total)}</div>
+                        <button type='button'>Check Out</button>
+                    </div>
+                ) : (
+                    <div>Your Shopping Cart is empty</div>
+                )}
             </Content>
         </Overlay>
     );

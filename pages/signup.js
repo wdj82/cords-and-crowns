@@ -2,7 +2,7 @@ import { useMutation } from 'react-query';
 import { useRouter } from 'next/router';
 
 import { signUpMutation } from '../util/gqlUtil';
-import useForm from '../util/useForm';
+import useForm from '../hooks/useForm';
 
 function SignUpPage() {
     // const queryClient = useQueryClient();
