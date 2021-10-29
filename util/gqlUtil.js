@@ -28,6 +28,7 @@ const SINGLE_ITEM_QUERY = gql`
             name
             price
             description
+            slug
             images {
                 url
                 fileName

@@ -13,10 +13,11 @@ export function useCartState() {
         return {};
     });
 
-    function addToCart({ name, price, image }) {
+    function addToCart({ slug, name, price, image }) {
         const newCart = { ...cart };
-        if (!cart[name]) {
-            newCart[name] = {
+        if (!cart[slug]) {
+            newCart[slug] = {
+                slug,
                 name,
                 price,
                 image: image.url,

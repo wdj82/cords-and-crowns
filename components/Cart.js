@@ -1,16 +1,45 @@
+import { useState } from 'react';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
 import styled, { keyframes } from 'styled-components';
+import { loadStripe } from '@stripe/stripe-js';
 
 import Icon from './Icon';
 import UnstyledButton from './UnstyledButton';
 import VisuallyHidden from './VisuallyHidden';
 import { useCart } from '../hooks/useCart';
 import formatMoney from '../util/formatMoney';
+import CartItem from './CartItem';
+import { publicStripeKey } from '../config';
+
+const stripePromise = loadStripe(publicStripeKey);
 
 function Cart({ isOpen, onDismiss }) {
-    const { cart, removeFromCart } = useCart();
+    const [working, setWorking] = useState(false);
+    const { cart } = useCart();
     const keys = Object.keys(cart);
     let total = 0;
+
+    async function handleClick(e) {
+        e.preventDefault();
+        setWorking(true);
+        const stripe = await stripePromise;
+
+        const session = await fetch('/api/create-checkout-session', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                keys,
+            }),
+        }).then((resp) => resp.json());
+
+        await stripe.redirectToCheckout({
+            sessionId: session.id,
+        });
+
+        setWorking(false);
+    }
 
     return (
         <Overlay isOpen={isOpen} onDismiss={onDismiss}>
@@ -21,22 +50,16 @@ function Cart({ isOpen, onDismiss }) {
                     <Icon id='close' />
                 </UnstyledButton>
                 {keys.map((key) => {
-                    const { name, price } = cart[key];
+                    const { slug, name, price } = cart[key];
                     total += price;
-                    return (
-                        <div key={name}>
-                            <div>{name}</div>
-                            <div>{formatMoney(price)}</div>
-                            <button type='button' onClick={() => removeFromCart(name)}>
-                                Remove from Cart
-                            </button>
-                        </div>
-                    );
+                    return <CartItem key={slug} slug={slug} name={name} price={price} />;
                 })}
                 {total > 0 ? (
                     <div>
                         <div>Total: {formatMoney(total)}</div>
-                        <button type='button'>Check Out</button>
+                        <button type='button' onClick={handleClick} disabled={working}>
+                            Check Out
+                        </button>
                     </div>
                 ) : (
                     <div>Your Shopping Cart is empty</div>
