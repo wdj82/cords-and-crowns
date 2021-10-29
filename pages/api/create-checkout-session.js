@@ -34,7 +34,7 @@ export default async (req, res) => {
             },
         },
         quantity: 1,
-        tax_rates: ['txr_1Jq0OcIMF3sWfagh6AiM5SdD'],
+        tax_rates: ['txr_1Jq0ZmIMF3sWfaghFHqEamJX'],
     }));
 
     try {
