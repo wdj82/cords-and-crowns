@@ -7,6 +7,7 @@ const ALL_PRODUCTS_QUERY = gql`
             price
             description
             slug
+            available
             images(first: 1) {
                 url
             }
@@ -29,35 +30,10 @@ const SINGLE_ITEM_QUERY = gql`
             price
             description
             slug
+            available
             images {
                 url
                 fileName
-            }
-        }
-    }
-`;
-
-const CURRENT_USER_QUERY = gql`
-    query {
-        authenticatedItem {
-            ... on User {
-                id
-                email
-                cart {
-                    id
-                    quantity
-                    product {
-                        id
-                        name
-                        description
-                        price
-                        photo {
-                            image {
-                                publicUrlTransformed
-                            }
-                        }
-                    }
-                }
             }
         }
     }
@@ -126,10 +102,6 @@ async function getProduct(slug) {
     return graphCMSClient.request(SINGLE_ITEM_QUERY, { slug });
 }
 
-async function getCurrentUser() {
-    return graphCMSClient.request(CURRENT_USER_QUERY);
-}
-
 async function signInMutation(variables) {
     return graphCMSClient.request(SIGN_IN_MUTATION, variables);
 }
@@ -154,7 +126,6 @@ export {
     getProducts,
     getSlugs,
     getProduct,
-    getCurrentUser,
     signInMutation,
     signOutMutation,
     signUpMutation,
