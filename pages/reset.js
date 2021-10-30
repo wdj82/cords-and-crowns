@@ -82,3 +82,9 @@
 // }
 
 // export default ResetPage;
+
+function reset() {
+    return <div>reset page</div>;
+}
+
+export default reset;
