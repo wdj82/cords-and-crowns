@@ -61,6 +61,13 @@ export default async (req, res) => {
                         }
                     }
                 }
+                publishManyProductsConnection(where: { slug_in: $data }, to: PUBLISHED) {
+                    edges {
+                        node {
+                            id
+                        }
+                    }
+                }
             }
         `,
         {

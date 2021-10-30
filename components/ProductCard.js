@@ -4,14 +4,14 @@ import styled from 'styled-components';
 
 import formatMoney from '../util/formatMoney';
 
-function ProductCard({ name, price, slug, images }) {
+function ProductCard({ name, price, slug, images, available }) {
     return (
         <Link href={`/product/${slug}`}>
             <Wrapper>
                 <ProductImage src={images[0]?.url} alt={name} width={500} height={375} />
                 <Row>
                     <p>{name}</p>
-                    <p>{formatMoney(price)}</p>
+                    {available ? <p>{formatMoney(price)}</p> : <p>Sold Out</p>}
                 </Row>
             </Wrapper>
         </Link>

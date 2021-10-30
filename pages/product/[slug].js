@@ -11,7 +11,7 @@ import Cart from '../../components/Cart';
 function SingleProductPage({ dehydratedState }) {
     const [working, setWorking] = useState(false);
     const [showCart, setShowCart] = useState(false);
-    const { name, price, description, images, slug } = dehydratedState.queries[0].state.data.product;
+    const { name, price, description, images, slug, available } = dehydratedState.queries[0].state.data.product;
     const { addToCart } = useCart();
 
     async function buyNow(e) {
@@ -27,7 +27,7 @@ function SingleProductPage({ dehydratedState }) {
                 <title>Cords&amp;Crowns | {name}</title>
             </Head>
             <h1>{name}</h1>
-            <p>{price}</p>
+            {available ? <p>{price}</p> : <p>Sold Out</p>}
             <p>{description}</p>
             {images.map((image) => (
                 <Image key={image.fileName} src={image.url} alt={name} width={500} height={375} />
@@ -38,10 +38,11 @@ function SingleProductPage({ dehydratedState }) {
                     addToCart({ slug, name, price, image: images[0] });
                     setShowCart(true);
                 }}
+                disabled={!available}
             >
                 Add to Cart
             </button>
-            <button type='button' onClick={buyNow} disabled={working}>
+            <button type='button' onClick={buyNow} disabled={working || !available}>
                 Buy Now
             </button>
             {showCart && <Cart isOpen={showCart} onDismiss={() => setShowCart(false)} />}
