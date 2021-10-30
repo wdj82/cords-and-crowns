@@ -6,9 +6,11 @@ import Image from 'next/image';
 import { getProduct, getSlugs } from '../../util/gqlUtil';
 import { useCart } from '../../hooks/useCart';
 import stripeCheckout from '../../util/stripeCheckout';
+import Cart from '../../components/Cart';
 
 function SingleProductPage({ dehydratedState }) {
     const [working, setWorking] = useState(false);
+    const [showCart, setShowCart] = useState(false);
     const { name, price, description, images, slug } = dehydratedState.queries[0].state.data.product;
     const { addToCart } = useCart();
 
@@ -30,12 +32,19 @@ function SingleProductPage({ dehydratedState }) {
             {images.map((image) => (
                 <Image key={image.fileName} src={image.url} alt={name} width={500} height={375} />
             ))}
-            <button type='button' onClick={() => addToCart({ slug, name, price, image: images[0] })}>
+            <button
+                type='button'
+                onClick={() => {
+                    addToCart({ slug, name, price, image: images[0] });
+                    setShowCart(true);
+                }}
+            >
                 Add to Cart
             </button>
             <button type='button' onClick={buyNow} disabled={working}>
                 Buy Now
             </button>
+            {showCart && <Cart isOpen={showCart} onDismiss={() => setShowCart(false)} />}
         </div>
     );
 }

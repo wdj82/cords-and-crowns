@@ -43,9 +43,12 @@ const ORDER_CHECKOUTID__QUERY = gql`
     query ($id: String!) {
         order(where: { stripeCheckoutId: $id }) {
             total
+            subtotal
+            tax
             orderItems {
                 total
                 product {
+                    slug
                     name
                     price
                 }

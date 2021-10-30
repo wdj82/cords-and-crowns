@@ -3,7 +3,7 @@ import { useState, createContext, useContext, useEffect } from 'react';
 export const CartContext = createContext();
 
 export function useCartState() {
-    const [cart, updateCart] = useState(() => {
+    const [cart, setCart] = useState(() => {
         if (typeof window !== 'undefined') {
             const valueInLocalStorage = window.localStorage.getItem('cart');
             if (valueInLocalStorage) {
@@ -22,25 +22,21 @@ export function useCartState() {
                 price,
                 image: image.url,
             };
-            updateCart(newCart);
+            setCart(newCart);
         }
     }
 
     function removeFromCart(name) {
         const newCart = { ...cart };
         delete newCart[name];
-        updateCart(newCart);
-    }
-
-    function clearCart() {
-        updateCart({});
+        setCart(newCart);
     }
 
     useEffect(() => {
         window.localStorage.setItem('cart', JSON.stringify(cart));
     }, [cart]);
 
-    return { cart, addToCart, removeFromCart, clearCart };
+    return { cart, setCart, addToCart, removeFromCart };
 }
 
 export function useCart() {

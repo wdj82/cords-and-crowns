@@ -16,10 +16,11 @@ export default async (req, res) => {
     });
 
     const lineItems = session.line_items.data;
-    const { email } = session.customer;
 
     const data = {
-        email,
+        email: session.customer.email,
+        tax: session.total_details.amount_tax,
+        subtotal: session.amount_subtotal,
         total: session.amount_total,
         stripeCheckoutId: session.id,
         orderItems: {
@@ -47,8 +48,8 @@ export default async (req, res) => {
         },
     );
 
+    // make purchased products unavailable
     const slugs = lineItems.map((item) => item.price.product.metadata.productSlug);
-
     await graphCMSMutationClient.request(
         gql`
             mutation ($data: [String!]) {
