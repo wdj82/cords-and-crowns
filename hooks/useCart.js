@@ -32,11 +32,15 @@ export function useCartState() {
         updateCart(newCart);
     }
 
+    function clearCart() {
+        updateCart({});
+    }
+
     useEffect(() => {
         window.localStorage.setItem('cart', JSON.stringify(cart));
     }, [cart]);
 
-    return { cart, addToCart, removeFromCart };
+    return { cart, addToCart, removeFromCart, clearCart };
 }
 
 export function useCart() {

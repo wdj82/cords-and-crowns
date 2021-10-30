@@ -39,7 +39,7 @@ export default async (req, res) => {
 
     try {
         const session = await stripe.checkout.sessions.create({
-            success_url: 'http://localhost:7777/success',
+            success_url: 'http://localhost:7777/success?id={CHECKOUT_SESSION_ID}',
             cancel_url: `http://localhost:7777/`,
             mode: 'payment',
             payment_method_types: ['card'],
@@ -48,9 +48,10 @@ export default async (req, res) => {
             },
             line_items: lineItems,
         });
-        res.json(session);
+        res.status(201).json(session);
         return;
-    } catch (e) {
-        res.json({ error: { message: e } });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'There was a problem creating the Stripe Checkout session' });
     }
 };

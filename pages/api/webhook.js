@@ -3,9 +3,11 @@ import Stripe from 'stripe';
 import { graphCMSMutationClient, gql } from '../../util/graphCMSClient';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+// const endpointSecret = 'whsec_hEDnZ6KVrLOSBmwC7HQ9S0PebSfKPTsa'
 
 export default async (req, res) => {
     const event = req.body;
+    // const sig = req.headers['stripe-signature'];
 
     // console.log('eventId: ', event.id);
 

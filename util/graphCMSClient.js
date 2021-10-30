@@ -6,5 +6,10 @@ const graphCMSMutationClient = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHCM
         Authorization: `Bearer ${process.env.GRAPHCMS_MUTATION_TOKEN}`,
     },
 });
+const graphCMSOrdersClient = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT, {
+    headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_GRAPHCMS_ORDERS_TOKEN}`,
+    },
+});
 
-export { gql, graphCMSClient, graphCMSMutationClient };
+export { gql, graphCMSClient, graphCMSMutationClient, graphCMSOrdersClient };
