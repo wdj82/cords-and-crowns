@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export default async (req, res) => {
     const event = req.body;
 
-    console.log('eventId: ', event.id);
+    // console.log('eventId: ', event.id);
 
     const session = await stripe.checkout.sessions.retrieve(event.data.object.id, {
         expand: ['line_items.data.price.product', 'customer'],
@@ -46,7 +46,6 @@ export default async (req, res) => {
     );
 
     const slugs = lineItems.map((item) => item.price.product.metadata.productSlug);
-    console.log(slugs);
 
     await graphCMSMutationClient.request(
         gql`

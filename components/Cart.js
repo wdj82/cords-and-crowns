@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
 import styled, { keyframes } from 'styled-components';
-import { loadStripe } from '@stripe/stripe-js';
 
 import Icon from './Icon';
 import UnstyledButton from './UnstyledButton';
@@ -9,9 +8,7 @@ import VisuallyHidden from './VisuallyHidden';
 import { useCart } from '../hooks/useCart';
 import formatMoney from '../util/formatMoney';
 import CartItem from './CartItem';
-import { publicStripeKey } from '../config';
-
-const stripePromise = loadStripe(publicStripeKey);
+import stripeCheckout from '../util/stripeCheckout';
 
 function Cart({ isOpen, onDismiss }) {
     const [working, setWorking] = useState(false);
@@ -22,22 +19,7 @@ function Cart({ isOpen, onDismiss }) {
     async function handleClick(e) {
         e.preventDefault();
         setWorking(true);
-        const stripe = await stripePromise;
-
-        const session = await fetch('/api/create-checkout-session', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                keys,
-            }),
-        }).then((resp) => resp.json());
-
-        await stripe.redirectToCheckout({
-            sessionId: session.id,
-        });
-
+        await stripeCheckout(keys);
         setWorking(false);
     }
 

@@ -1,10 +1,9 @@
 import { gql, GraphQLClient } from 'graphql-request';
-import { endpoint, mutationToken } from '../config';
 
-const graphCMSClient = new GraphQLClient(endpoint);
-const graphCMSMutationClient = new GraphQLClient(endpoint, {
+const graphCMSClient = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT);
+const graphCMSMutationClient = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT, {
     headers: {
-        Authorization: `Bearer ${mutationToken}`,
+        Authorization: `Bearer ${process.env.GRAPHCMS_MUTATION_TOKEN}`,
     },
 });
 

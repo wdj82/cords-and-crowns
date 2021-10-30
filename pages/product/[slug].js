@@ -2,13 +2,10 @@ import { useState } from 'react';
 import { dehydrate, QueryClient } from 'react-query';
 import Head from 'next/head';
 import Image from 'next/image';
-import { loadStripe } from '@stripe/stripe-js';
 
 import { getProduct, getSlugs } from '../../util/gqlUtil';
 import { useCart } from '../../hooks/useCart';
-import { publicStripeKey } from '../../config';
-
-const stripePromise = loadStripe(publicStripeKey);
+import stripeCheckout from '../../util/stripeCheckout';
 
 function SingleProductPage({ dehydratedState }) {
     const [working, setWorking] = useState(false);
@@ -18,22 +15,7 @@ function SingleProductPage({ dehydratedState }) {
     async function buyNow(e) {
         e.preventDefault();
         setWorking(true);
-        const stripe = await stripePromise;
-
-        const session = await fetch('/api/create-checkout-session', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                keys: [slug],
-            }),
-        }).then((resp) => resp.json());
-
-        await stripe.redirectToCheckout({
-            sessionId: session.id,
-        });
-
+        await stripeCheckout([slug]);
         setWorking(false);
     }
 

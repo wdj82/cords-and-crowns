@@ -18,12 +18,12 @@ function Header() {
                 <Logo />
                 <Actions>
                     <SearchInput />
-                    <Link href='/account'>
+                    {/* <Link href='/account'>
                         <IconButton>
                             <VisuallyHidden>Account</VisuallyHidden>
                             <Icon id='user' />
                         </IconButton>
-                    </Link>
+                    </Link> */}
 
                     <IconButton onClick={() => setShowCart(true)}>
                         <VisuallyHidden>Open Cart</VisuallyHidden>
