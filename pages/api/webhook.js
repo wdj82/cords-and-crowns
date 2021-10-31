@@ -35,7 +35,7 @@ export default async (req, res) => {
         },
     };
 
-    await graphCMSClient.request(
+    const createOrder = await graphCMSClient.request(
         gql`
             mutation CreateOrderMutation($data: OrderCreateInput!) {
                 createOrder(data: $data) {
@@ -47,10 +47,11 @@ export default async (req, res) => {
             data,
         },
     );
+    console.log('createOrder: ', createOrder);
 
     // make purchased products unavailable
     const slugs = lineItems.map((item) => item.price.product.metadata.productSlug);
-    await graphCMSClient.request(
+    const update = await graphCMSClient.request(
         gql`
             mutation ($data: [String!]) {
                 updateManyProductsConnection(where: { slug_in: $data }, data: { available: false }) {
@@ -75,5 +76,6 @@ export default async (req, res) => {
         },
     );
 
+    console.log('update', update);
     res.json({ message: 'success' });
 };
