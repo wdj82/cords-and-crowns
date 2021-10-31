@@ -14,10 +14,10 @@ function SuccessPage() {
 
     useEffect(() => {
         const fetchOrder = async () => {
-            const { order } = await getOrder({ id: router.query.id });
-            console.log(order);
+            const result = await getOrder({ id: router.query.id });
+            console.log(result);
             setLoading(false);
-            setOrderDetails(order);
+            setOrderDetails(result.order);
         };
 
         if (router.query.id) {
