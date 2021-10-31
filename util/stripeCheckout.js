@@ -12,6 +12,8 @@ async function stripeCheckout(keys) {
         },
         body: JSON.stringify({
             keys,
+            successURL: `${window.location.origin}/success`,
+            cancelURL: `${window.location.origin}/`,
         }),
     }).then((resp) => resp.json());
 

@@ -5,7 +5,7 @@ import { graphCMSClient, gql } from '../../util/graphCMSClient';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async (req, res) => {
-    const { keys } = req.body;
+    const { keys, successURL, cancelURL } = req.body;
 
     const { products } = await graphCMSClient.request(
         gql`
@@ -39,8 +39,8 @@ export default async (req, res) => {
 
     try {
         const session = await stripe.checkout.sessions.create({
-            success_url: 'http://localhost:7777/success?id={CHECKOUT_SESSION_ID}',
-            cancel_url: `http://localhost:7777/`,
+            success_url: `${successURL}?id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${cancelURL}`,
             mode: 'payment',
             payment_method_types: ['card'],
             shipping_address_collection: {
