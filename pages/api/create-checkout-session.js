@@ -7,8 +7,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export default async (req, res) => {
     const { keys, successURL, cancelURL } = req.body;
 
-    console.log('checkout api');
-    console.log(process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT);
     const { products } = await graphCMSClient.request(
         gql`
             query FILTER_SLUGS($slug: [String!]) {
