@@ -128,8 +128,10 @@ async function getOrder(id) {
 
     const test = await graphCMSClient.request(
         gql`
-            query ($id: String!) {
-                order(where: { stripeCheckoutId: $id }) {
+            query {
+                order(
+                    where: { stripeCheckoutId: "cs_test_a1LaLPlsrwtdMZikivFAqrXYJ3pIGHa0zAhqPtzMDxcOlXO527CVPsBrOS" }
+                ) {
                     total
                     subtotal
                     tax
