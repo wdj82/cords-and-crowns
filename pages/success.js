@@ -15,7 +15,6 @@ function SuccessPage() {
     useEffect(() => {
         const fetchOrder = async () => {
             const { order } = await getOrder({ id: router.query.id });
-            console.log('order: ', order);
             setLoading(false);
             setOrderDetails(order);
         };
@@ -25,8 +24,6 @@ function SuccessPage() {
             setCart({});
         }
     }, [router.query.id, setCart]);
-
-    console.log(router.query.id);
 
     if (loading) return <div>Loading...</div>;
 

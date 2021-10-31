@@ -7,6 +7,7 @@ const nextConfig = {
         // domains: ['res.cloudinary.com'],
         domains: ['media.graphcms.com'],
     },
+    generateBuildId: () => 'build',
 };
 
 module.exports = nextConfig;
