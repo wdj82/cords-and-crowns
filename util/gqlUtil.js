@@ -123,7 +123,31 @@ async function getProduct(slug) {
 async function getOrder(id) {
     console.log(id);
     // return graphCMSOrdersClient.request(ORDER_CHECKOUTID__QUERY, id);
-    return graphCMSClient.request(ORDER_CHECKOUTID__QUERY, id);
+    const result = await graphCMSClient.request(ORDER_CHECKOUTID__QUERY, id);
+    console.log(result);
+
+    const test = await graphCMSClient.request(
+        gql`
+            query ($id: String!) {
+                order(where: { stripeCheckoutId: $id }) {
+                    total
+                    subtotal
+                    tax
+                    orderItems {
+                        total
+                        product {
+                            slug
+                            name
+                            price
+                        }
+                    }
+                }
+            }
+        `,
+    );
+    console.log('test', test);
+
+    return test;
 }
 
 // async function signInMutation(variables) {
