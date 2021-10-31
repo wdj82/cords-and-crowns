@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-import { graphCMSMutationClient, gql } from '../../util/graphCMSClient';
+import { graphCMSClient, gql } from '../../util/graphCMSClient';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // const endpointSecret = 'whsec_hEDnZ6KVrLOSBmwC7HQ9S0PebSfKPTsa'
@@ -9,7 +9,7 @@ export default async (req, res) => {
     const event = req.body;
     // const sig = req.headers['stripe-signature'];
 
-    // console.log('eventId: ', event.id);
+    console.log('eventId: ', event.id);
 
     const session = await stripe.checkout.sessions.retrieve(event.data.object.id, {
         expand: ['line_items.data.price.product', 'customer'],
@@ -35,7 +35,7 @@ export default async (req, res) => {
         },
     };
 
-    await graphCMSMutationClient.request(
+    await graphCMSClient.request(
         gql`
             mutation CreateOrderMutation($data: OrderCreateInput!) {
                 createOrder(data: $data) {
@@ -50,7 +50,7 @@ export default async (req, res) => {
 
     // make purchased products unavailable
     const slugs = lineItems.map((item) => item.price.product.metadata.productSlug);
-    await graphCMSMutationClient.request(
+    await graphCMSClient.request(
         gql`
             mutation ($data: [String!]) {
                 updateManyProductsConnection(where: { slug_in: $data }, data: { available: false }) {

@@ -1,4 +1,4 @@
-import { gql, graphCMSClient, graphCMSOrdersClient } from './graphCMSClient';
+import { gql, graphCMSClient } from './graphCMSClient';
 
 const ALL_PRODUCTS_QUERY = gql`
     query ALL_PRODUCTS_QUERY {
@@ -121,7 +121,8 @@ async function getProduct(slug) {
 }
 
 async function getOrder(id) {
-    return graphCMSOrdersClient.request(ORDER_CHECKOUTID__QUERY, id);
+    // return graphCMSOrdersClient.request(ORDER_CHECKOUTID__QUERY, id);
+    return graphCMSClient.request(ORDER_CHECKOUTID__QUERY, id);
 }
 
 // async function signInMutation(variables) {
