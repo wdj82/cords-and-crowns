@@ -1,16 +1,18 @@
 import Stripe from 'stripe';
 
-import { graphCMSOrdersClient, gql } from '../../util/graphCMSClient';
+import { graphCMSCreateOrdersClient, gql } from '../../util/graphCMSClient';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-// const endpointSecret = 'whsec_hEDnZ6KVrLOSBmwC7HQ9S0PebSfKPTsa'
 
 export default async (req, res) => {
     const event = req.body;
     // const sig = req.headers['stripe-signature'];
-
-    console.log('webhook api');
     console.log(process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT);
+
+    console.log(typeof process.env.GRAPHCMS_CREATE_ORDERS_MUTATION_TOKEN);
+    if (process.env.GRAPHCMS_CREATE_ORDERS_MUTATION_TOKEN === '') {
+        console.log('token is empty');
+    }
     console.log('eventId: ', event.id);
 
     const session = await stripe.checkout.sessions.retrieve(event.data.object.id, {
@@ -37,51 +39,57 @@ export default async (req, res) => {
         },
     };
 
-    const createOrder = await graphCMSOrdersClient.request(
-        gql`
-            mutation CreateOrderMutation($data: OrderCreateInput!, $id: String!) {
-                createOrder(data: $data) {
-                    id
+    try {
+        const { createOrder } = await graphCMSCreateOrdersClient.request(
+            gql`
+                mutation CreateOrderMutation($data: OrderCreateInput!) {
+                    createOrder(data: $data) {
+                        id
+                    }
                 }
-                # publishOrder(where: { stripeCheckoutId: $id }) {
-                #     id
-                # }
-            }
-        `,
-        {
-            data,
-            id: data.stripeCheckoutId,
-        },
-    );
-    console.log('createOrder: ', createOrder);
+            `,
+            {
+                data,
+            },
+        );
+        console.log('createOrder: ', createOrder);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'There was a problem creating the order on the backend' });
+    }
 
     // make purchased products unavailable
     const slugs = lineItems.map((item) => item.price.product.metadata.productSlug);
-    const update = await graphCMSOrdersClient.request(
-        gql`
-            mutation ($data: [String!]) {
-                updateManyProductsConnection(where: { slug_in: $data }, data: { available: false }) {
-                    edges {
-                        node {
-                            slug
-                            available
+    try {
+        await graphCMSCreateOrdersClient.request(
+            gql`
+                mutation ($data: [String!]) {
+                    updateManyProductsConnection(where: { slug_in: $data }, data: { available: false }) {
+                        edges {
+                            node {
+                                slug
+                                available
+                            }
+                        }
+                    }
+                    publishManyProductsConnection(where: { slug_in: $data }, to: PUBLISHED) {
+                        edges {
+                            node {
+                                id
+                            }
                         }
                     }
                 }
-                # publishManyProductsConnection(where: { slug_in: $data }, to: PUBLISHED) {
-                #     edges {
-                #         node {
-                #             id
-                #         }
-                #     }
-                # }
-            }
-        `,
-        {
-            data: slugs,
-        },
-    );
+            `,
+            {
+                data: slugs,
+            },
+        );
+        console.log('updated', slugs);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'There was a problem updating the products on the backend' });
+    }
 
-    console.log('update', update);
     res.json({ message: 'success' });
 };

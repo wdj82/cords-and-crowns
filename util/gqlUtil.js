@@ -39,8 +39,8 @@ const SINGLE_ITEM_QUERY = gql`
     }
 `;
 
-const ORDER_CHECKOUTID__QUERY = gql`
-    query ($id: String!) {
+const GET_ORDER_QUERY = gql`
+    query GET_ORDER_QUERY($id: String!) {
         order(where: { stripeCheckoutId: $id }) {
             total
             subtotal
@@ -109,7 +109,6 @@ const ORDER_CHECKOUTID__QUERY = gql`
 // `;
 
 async function getProducts() {
-    console.log('getting products');
     return graphCMSClient.request(ALL_PRODUCTS_QUERY);
 }
 
@@ -122,41 +121,12 @@ async function getProduct(slug) {
 }
 
 async function getOrder(id) {
-    console.log(id);
-    // return graphCMSOrdersClient.request(ORDER_CHECKOUTID__QUERY, id);
-    const result = await graphCMSClient.request(ORDER_CHECKOUTID__QUERY, id);
-    console.log(result);
-
     try {
-        const test = await graphCMSOrdersClient.request(
-            gql`
-                query {
-                    order(
-                        where: {
-                            stripeCheckoutId: "cs_test_a1LaLPlsrwtdMZikivFAqrXYJ3pIGHa0zAhqPtzMDxcOlXO527CVPsBrOS"
-                        }
-                    ) {
-                        total
-                        subtotal
-                        tax
-                        orderItems {
-                            total
-                            product {
-                                slug
-                                name
-                                price
-                            }
-                        }
-                    }
-                }
-            `,
-        );
-        console.log('test: ', test);
+        return graphCMSOrdersClient.request(GET_ORDER_QUERY, id);
     } catch (error) {
         console.log(error);
+        return { order: null };
     }
-
-    return result;
 }
 
 // async function signInMutation(variables) {

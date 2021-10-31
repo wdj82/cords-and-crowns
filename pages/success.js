@@ -25,7 +25,7 @@ function SuccessPage() {
         }
     }, [router.query.id, setCart]);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <div>Loading Your Order...</div>;
 
     if (orderDetails) {
         return (
@@ -43,7 +43,7 @@ function SuccessPage() {
         );
     }
 
-    return null;
+    return <div>There was a problem loading your order details</div>;
 }
 
 export default SuccessPage;
