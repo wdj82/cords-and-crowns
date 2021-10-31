@@ -15,6 +15,7 @@ function SuccessPage() {
     useEffect(() => {
         const fetchOrder = async () => {
             const { order } = await getOrder({ id: router.query.id });
+            console.log(order);
             setLoading(false);
             setOrderDetails(order);
         };
