@@ -13,6 +13,8 @@ function SuccessPage() {
     const [orderDetails, setOrderDetails] = useState();
 
     useEffect(() => {
+        console.log(router.query);
+
         const fetchOrder = async () => {
             const result = await getOrder({ id: router.query.id });
             console.log(result);
@@ -24,7 +26,7 @@ function SuccessPage() {
             fetchOrder();
             setCart({});
         }
-    }, [router.query.id, setCart]);
+    }, [router.query, setCart]);
 
     if (loading) return <div>Loading...</div>;
 

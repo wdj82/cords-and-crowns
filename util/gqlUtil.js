@@ -121,6 +121,7 @@ async function getProduct(slug) {
 }
 
 async function getOrder(id) {
+    console.log(id);
     // return graphCMSOrdersClient.request(ORDER_CHECKOUTID__QUERY, id);
     return graphCMSClient.request(ORDER_CHECKOUTID__QUERY, id);
 }
