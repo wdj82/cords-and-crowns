@@ -1,4 +1,4 @@
-import { gql, graphCMSClient } from './graphCMSClient';
+import { gql, graphCMSClient, graphCMSOrdersClient } from './graphCMSClient';
 
 const ALL_PRODUCTS_QUERY = gql`
     query ALL_PRODUCTS_QUERY {
@@ -126,30 +126,36 @@ async function getOrder(id) {
     const result = await graphCMSClient.request(ORDER_CHECKOUTID__QUERY, id);
     console.log(result);
 
-    const test = await graphCMSClient.request(
-        gql`
-            query {
-                order(
-                    where: { stripeCheckoutId: "cs_test_a1LaLPlsrwtdMZikivFAqrXYJ3pIGHa0zAhqPtzMDxcOlXO527CVPsBrOS" }
-                ) {
-                    total
-                    subtotal
-                    tax
-                    orderItems {
+    try {
+        const test = await graphCMSOrdersClient.request(
+            gql`
+                query {
+                    order(
+                        where: {
+                            stripeCheckoutId: "cs_test_a1LaLPlsrwtdMZikivFAqrXYJ3pIGHa0zAhqPtzMDxcOlXO527CVPsBrOS"
+                        }
+                    ) {
                         total
-                        product {
-                            slug
-                            name
-                            price
+                        subtotal
+                        tax
+                        orderItems {
+                            total
+                            product {
+                                slug
+                                name
+                                price
+                            }
                         }
                     }
                 }
-            }
-        `,
-    );
-    console.log('test', test);
+            `,
+        );
+        console.log('test: ', test);
+    } catch (error) {
+        console.log(error);
+    }
 
-    return test;
+    return result;
 }
 
 // async function signInMutation(variables) {
