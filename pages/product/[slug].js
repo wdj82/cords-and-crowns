@@ -1,19 +1,33 @@
 import { useState } from 'react';
-import { dehydrate, QueryClient } from 'react-query';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
+import { dehydrate, QueryClient, useQuery } from 'react-query';
 
 import { getProduct, getSlugs } from '../../util/gqlUtil';
 import { useCart } from '../../hooks/useCart';
 import stripeCheckout from '../../util/stripeCheckout';
 import Cart from '../../components/Cart';
 
-function SingleProductPage({ dehydratedState }) {
+function SingleProductPage() {
     const [working, setWorking] = useState(false);
     const [showCart, setShowCart] = useState(false);
-    const { name, price, description, images, slug, available } = dehydratedState.queries[0].state.data.product;
-    console.log({ name, price, description, images, slug, available });
     const { addToCart } = useCart();
+    const router = useRouter();
+
+    // enabled option tells the query to wait until the router is ready
+    const { data, error, isLoading } = useQuery(['product', router.query.slug], () => getProduct(router.query.slug), {
+        enabled: !!router.query.slug,
+    });
+
+    if (isLoading) return <div>Loading...</div>;
+    if (error) {
+        console.log(error);
+        return <div>Problem loading product. Please try again later.</div>;
+    }
+
+    const { name, price, description, images, available, slug } = data.product;
+    // console.log({ name, price, description, images, available, slug });
 
     async function buyNow(e) {
         e.preventDefault();

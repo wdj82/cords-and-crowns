@@ -117,6 +117,7 @@ async function getSlugs() {
 }
 
 async function getProduct(slug) {
+    console.log('fetching: ', slug);
     return graphCMSClient.request(SINGLE_ITEM_QUERY, { slug });
 }
 
