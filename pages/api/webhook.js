@@ -37,14 +37,18 @@ export default async (req, res) => {
 
     const createOrder = await graphCMSClient.request(
         gql`
-            mutation CreateOrderMutation($data: OrderCreateInput!) {
+            mutation CreateOrderMutation($data: OrderCreateInput!, $id: String!) {
                 createOrder(data: $data) {
+                    id
+                }
+                publishOrder(where: { stripeCheckoutId: $id }) {
                     id
                 }
             }
         `,
         {
             data,
+            id: data.stripeCheckoutId,
         },
     );
     console.log('createOrder: ', createOrder);
