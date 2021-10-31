@@ -7,12 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export default async (req, res) => {
     const event = req.body;
     // const sig = req.headers['stripe-signature'];
-    console.log(process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT);
 
-    console.log(typeof process.env.GRAPHCMS_CREATE_ORDERS_MUTATION_TOKEN);
-    if (process.env.GRAPHCMS_CREATE_ORDERS_MUTATION_TOKEN === '') {
-        console.log('token is empty');
-    }
     console.log('eventId: ', event.id);
 
     const session = await stripe.checkout.sessions.retrieve(event.data.object.id, {

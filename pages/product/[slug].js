@@ -12,6 +12,7 @@ function SingleProductPage({ dehydratedState }) {
     const [working, setWorking] = useState(false);
     const [showCart, setShowCart] = useState(false);
     const { name, price, description, images, slug, available } = dehydratedState.queries[0].state.data.product;
+    console.log({ name, price, description, images, slug, available });
     const { addToCart } = useCart();
 
     async function buyNow(e) {
