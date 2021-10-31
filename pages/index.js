@@ -35,9 +35,6 @@ function ProductsPage() {
 export async function getStaticProps() {
     const queryClient = new QueryClient();
 
-    console.log('server prefetching');
-    console.log(process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT);
-
     await queryClient.prefetchQuery('slugs', () => getSlugs());
     await queryClient.prefetchQuery('products', () => getProducts());
     return {

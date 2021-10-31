@@ -110,7 +110,6 @@ const ORDER_CHECKOUTID__QUERY = gql`
 
 async function getProducts() {
     console.log('getting products');
-    console.log(process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT);
     return graphCMSClient.request(ALL_PRODUCTS_QUERY);
 }
 
