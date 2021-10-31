@@ -85,9 +85,20 @@ html {
     */
 }
 
-html, body, #root {
+html, body, #__next {
     height: 100%;
 }
+
+img,
+picture {
+    max-width: 100%;
+    display: block;
+}
+
+input, button, textarea, select {
+    font: inherit;
+}
+
 `;
 
 export default GlobalStyles;

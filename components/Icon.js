@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Search, ShoppingCart, ChevronDown, User, X } from 'react-feather';
+import { Search, ShoppingCart, ChevronDown, User, X, HelpCircle } from 'react-feather';
 
 const icons = {
     search: Search,
@@ -7,6 +7,7 @@ const icons = {
     user: User,
     'chevron-down': ChevronDown,
     close: X,
+    contact: HelpCircle,
 };
 
 function Icon({ id, size, strokeWidth = 1, ...delegated }) {

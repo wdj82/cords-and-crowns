@@ -3,7 +3,7 @@ import { QueryClient, dehydrate } from 'react-query';
 import styled from 'styled-components';
 
 import ProductGrid from '../components/ProductGrid';
-import Select from '../components/Select';
+// import Select from '../components/Select';
 import { getProducts, getSlugs } from '../util/gqlUtil';
 
 function ProductsPage() {
@@ -17,17 +17,17 @@ function ProductsPage() {
                     <div>
                         <Title>Skulls</Title>
                     </div>
-                    <SortFilterWrapper>
+                    {/* <SortFilterWrapper>
                         <Select label='Sort' value='newest'>
                             <option value='newest'>Newest Releases</option>
                             <option value='price'>Price</option>
                         </Select>
-                    </SortFilterWrapper>
+                    </SortFilterWrapper> */}
                 </Header>
                 <Spacer />
                 <ProductGrid />
             </MainColumn>
-            <LeftColumn>SideBar</LeftColumn>
+            {/* <LeftColumn>SideBar</LeftColumn> */}
         </Wrapper>
     );
 }
@@ -51,9 +51,9 @@ const Wrapper = styled.div`
     align-items: baseline;
 `;
 
-const LeftColumn = styled.div`
-    flex-basis: 248px;
-`;
+// const LeftColumn = styled.div`
+//     flex-basis: 248px;
+// `;
 
 const MainColumn = styled.div`
     flex: 1;
@@ -70,7 +70,7 @@ const Title = styled.h2`
     font-weight: var(--medium);
 `;
 
-const SortFilterWrapper = styled.div``;
+// const SortFilterWrapper = styled.div``;
 
 const Spacer = styled.span`
     display: block;
