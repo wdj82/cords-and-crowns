@@ -18,7 +18,7 @@ function SingleProductPage() {
     const { addToCart } = useCart();
     const router = useRouter();
 
-    // enabled option tells the query to wait until the router is ready
+    // enabled option tells the query to wait until the router is ready so we can get the slug
     const { data, error, isLoading } = useQuery(
         ['product', router.query.slug],
         () => getProductQuery(router.query.slug),
@@ -29,7 +29,7 @@ function SingleProductPage() {
 
     if (isLoading) return <div>Loading...</div>;
     if (error) {
-        console.log(error);
+        console.error(error);
         return <div>Problem loading product. Please try again later.</div>;
     }
 
