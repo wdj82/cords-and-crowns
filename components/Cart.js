@@ -17,12 +17,12 @@ function Cart({ isOpen, onDismiss }) {
     const keys = Object.keys(cart);
     let total = 0;
 
-    async function handleClick(e) {
+    const handleClick = async (e) => {
         e.preventDefault();
         setWorking(true);
         await stripeCheckout(keys);
         setWorking(false);
-    }
+    };
 
     return (
         <Overlay isOpen={isOpen} onDismiss={onDismiss}>
@@ -50,7 +50,7 @@ function Cart({ isOpen, onDismiss }) {
                                 <Money>{formatMoney(total)}</Money>
                             </div>
                             <Buttons>
-                                <BuyButton type='button' onClick={() => handleClick} disabled={working}>
+                                <BuyButton type='button' onClick={handleClick} disabled={working}>
                                     Check Out
                                 </BuyButton>
                                 <Link href='/'>

@@ -18,7 +18,7 @@ export default async (req, res) => {
                 },
             },
             quantity: 1,
-            tax_rates: ['txr_1Jq0ZmIMF3sWfaghFHqEamJX'],
+            tax_rates: ['txr_1Jr6svLL5XZLSAT1sCCTRizt'],
         }));
 
         const session = await stripe.checkout.sessions.create({

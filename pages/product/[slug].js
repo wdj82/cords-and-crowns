@@ -60,21 +60,23 @@ function SingleProductPage() {
                     </div>
                 ))}
             </ImageWrapper>
-            <Footer>
-                <Button
-                    type='button'
-                    onClick={() => {
-                        addToCart({ slug, name, price, image: images[0] });
-                        setShowCart(true);
-                    }}
-                    disabled={!available}
-                >
-                    Add to Cart
-                </Button>
-                <BuyButton type='button' onClick={buyNow} disabled={working || !available}>
-                    Buy Now
-                </BuyButton>
-            </Footer>
+            {available && (
+                <Footer>
+                    <Button
+                        type='button'
+                        onClick={() => {
+                            addToCart({ slug, name, price, image: images[0] });
+                            setShowCart(true);
+                        }}
+                        disabled={!available}
+                    >
+                        Add to Cart
+                    </Button>
+                    <BuyButton type='button' onClick={buyNow} disabled={working || !available}>
+                        Buy Now
+                    </BuyButton>
+                </Footer>
+            )}
             {showCart && <Cart isOpen={showCart} onDismiss={() => setShowCart(false)} />}
         </div>
     );
