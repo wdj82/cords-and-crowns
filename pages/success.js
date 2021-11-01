@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import Image from 'next/image';
+import Head from 'next/head';
 import styled from 'styled-components';
 
 import { useCart } from '../hooks/useCart';
@@ -16,6 +17,9 @@ function SuccessPage(order) {
     if (order) {
         return (
             <div>
+                <Head>
+                    <title>Cords&amp;Crowns</title>
+                </Head>
                 <Header>
                     <h2>Thank you for your order!</h2>
                     <h3>You should receive an email invoice soon.</h3>

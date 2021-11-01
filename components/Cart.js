@@ -111,7 +111,7 @@ const Backdrop = styled.div`
 const Content = styled(DialogContent)`
     position: relative;
     background: white;
-    width: 500px;
+    width: 425px;
     height: 100%;
 
     @media (prefers-reduced-motion: no-preference) {
@@ -172,11 +172,11 @@ const Button = styled.button`
 `;
 
 const BuyButton = styled(Button)`
-    background: hsl(36deg, 100%, 50%);
+    background: hsl(0, 50%, 50%);
 
     &:hover,
     &:focus {
-        background: hsl(40, 100%, 50%);
+        background: hsl(0, 80%, 50%);
     }
 `;
 

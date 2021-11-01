@@ -133,11 +133,11 @@ const Button = styled.button`
 `;
 
 const BuyButton = styled(Button)`
-    background: hsl(36deg, 100%, 50%);
+    background: hsl(0, 50%, 50%);
 
     &:hover,
     &:focus {
-        background: hsl(40, 100%, 50%);
+        background: hsl(0, 80%, 50%);
     }
 `;
 
