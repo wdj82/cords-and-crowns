@@ -46,16 +46,19 @@ function Cart({ isOpen, onDismiss }) {
                     {total > 0 ? (
                         <Checkout>
                             <div>
-                                Subtotal ({keys.length} item{keys.length > 1 && 's'}): {formatMoney(total)}
+                                Subtotal ({keys.length} item{keys.length > 1 && 's'}):{' '}
+                                <Money>{formatMoney(total)}</Money>
                             </div>
-                            <Button type='button' onClick={() => handleClick} disabled={working}>
-                                Check Out
-                            </Button>
-                            <Link href='/'>
-                                <Button type='button' onClick={onDismiss}>
-                                    Continue Shopping
-                                </Button>
-                            </Link>
+                            <Buttons>
+                                <BuyButton type='button' onClick={() => handleClick} disabled={working}>
+                                    Check Out
+                                </BuyButton>
+                                <Link href='/'>
+                                    <Button type='button' onClick={onDismiss}>
+                                        Continue Shopping
+                                    </Button>
+                                </Link>
+                            </Buttons>
                         </Checkout>
                     ) : (
                         <div>Your Shopping Cart is empty</div>
@@ -128,11 +131,6 @@ const CloseButton = styled(UnstyledButton)`
     left: -48px;
     color: white;
 `;
-
-const Button = styled(UnstyledButton)`
-    color: blue;
-`;
-
 const Title = styled.h2`
     font-size: 1.5rem;
 `;
@@ -153,8 +151,42 @@ const Items = styled.div`
 const Checkout = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 8px;
-    width: 200px;
+`;
+
+const Button = styled.button`
+    padding: 8px 24px;
+    font-size: 1rem;
+    font-weight: var(--bold);
+    color: white;
+    background: var(--gray-700);
+    border-radius: 8px;
+    border: none;
+    width: 120px;
+
+    &:hover,
+    &:focus {
+        background: var(--gray-900);
+    }
+`;
+
+const BuyButton = styled(Button)`
+    background: hsl(36deg, 100%, 50%);
+
+    &:hover,
+    &:focus {
+        background: hsl(40, 100%, 50%);
+    }
+`;
+
+const Buttons = styled.div`
+    display: flex;
+    gap: 16px;
+`;
+
+const Money = styled.span`
+    font-weight: var(--bold);
 `;
 
 export default Cart;

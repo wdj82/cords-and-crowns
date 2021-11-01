@@ -30,6 +30,9 @@ function CartItem({ slug }) {
 const Wrapper = styled.div`
     display: flex;
     gap: 16px;
+    border: 1px solid var(--gray-300);
+    padding: 16px;
+    padding-bottom: 10px;
 `;
 
 const RemoveButton = styled(UnstyledButton)`

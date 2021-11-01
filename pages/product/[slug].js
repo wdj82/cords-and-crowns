@@ -36,12 +36,12 @@ function SingleProductPage() {
     const { name, price, description, images, available, slug } = data.product;
     // console.log({ name, price, description, images, available, slug });
 
-    async function buyNow(e) {
+    const buyNow = async (e) => {
         e.preventDefault();
         setWorking(true);
         await stripeCheckout([slug]);
         setWorking(false);
-    }
+    };
 
     return (
         <div>
@@ -61,7 +61,7 @@ function SingleProductPage() {
                 ))}
             </ImageWrapper>
             <Footer>
-                <button
+                <Button
                     type='button'
                     onClick={() => {
                         addToCart({ slug, name, price, image: images[0] });
@@ -70,10 +70,10 @@ function SingleProductPage() {
                     disabled={!available}
                 >
                     Add to Cart
-                </button>
-                <button type='button' onClick={buyNow} disabled={working || !available}>
+                </Button>
+                <BuyButton type='button' onClick={buyNow} disabled={working || !available}>
                     Buy Now
-                </button>
+                </BuyButton>
             </Footer>
             {showCart && <Cart isOpen={showCart} onDismiss={() => setShowCart(false)} />}
         </div>
@@ -113,6 +113,30 @@ const Footer = styled.footer`
     padding: 32px;
     display: flex;
     gap: 16px;
+`;
+
+const Button = styled.button`
+    padding: 8px 24px;
+    font-size: 1rem;
+    font-weight: var(--bold);
+    color: white;
+    background: var(--gray-700);
+    border-radius: 8px;
+    border: none;
+
+    &:hover,
+    &:focus {
+        background: var(--gray-900);
+    }
+`;
+
+const BuyButton = styled(Button)`
+    background: hsl(36deg, 100%, 50%);
+
+    &:hover,
+    &:focus {
+        background: hsl(40, 100%, 50%);
+    }
 `;
 
 export default SingleProductPage;
