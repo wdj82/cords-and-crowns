@@ -6,6 +6,7 @@ import ProductGrid from '../components/ProductGrid';
 // import Select from '../components/Select';
 import allProductsQuery from '../lib/allProductsQuery';
 import allSlugsQuery from '../lib/allSlugsQuery';
+import { QUERIES } from '../util/constants';
 
 function ProductsPage() {
     return (
@@ -50,6 +51,10 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: row-reverse;
     align-items: baseline;
+
+    /* @media ${QUERIES.phone} {
+        background: yellow;
+    } */
 `;
 
 // const LeftColumn = styled.div`
@@ -64,6 +69,10 @@ const Header = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: baseline;
+
+    @media ${QUERIES.phone} {
+        padding-left: 32px;
+    }
 `;
 
 const Title = styled.h2`

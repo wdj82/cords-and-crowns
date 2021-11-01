@@ -3,6 +3,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 
 import formatMoney from '../util/formatMoney';
+import { QUERIES } from '../util/constants';
 
 function ProductCard({ name, price, slug, images, available }) {
     return (
@@ -38,6 +39,10 @@ const Anchor = styled.a`
 
 const Wrapper = styled.div`
     width: fit-content;
+
+    @media ${QUERIES.phone} {
+        padding: 32px;
+    }
 `;
 
 const ProductImage = styled(Image)`

@@ -2,6 +2,7 @@ import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
 import allProductsQuery from '../lib/allProductsQuery';
+import { QUERIES } from '../util/constants';
 import ProductCard from './ProductCard';
 
 function ProductGrid() {
@@ -29,6 +30,11 @@ const Wrapper = styled.div`
     display: grid;
     gap: 32px;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+
+    @media ${QUERIES.phone} {
+        display: flex;
+        flex-direction: column;
+    }
 `;
 
 export default ProductGrid;

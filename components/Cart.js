@@ -10,6 +10,7 @@ import { useCart } from '../hooks/useCart';
 import formatMoney from '../util/formatMoney';
 import CartItem from './CartItem';
 import stripeCheckout from '../util/stripeCheckout';
+import { QUERIES } from '../util/constants';
 
 function Cart({ isOpen, onDismiss }) {
     const [working, setWorking] = useState(false);
@@ -130,6 +131,11 @@ const CloseButton = styled(UnstyledButton)`
     top: 0;
     left: -48px;
     color: white;
+
+    @media ${QUERIES.phone} {
+        color: black;
+        left: 0%;
+    }
 `;
 const Title = styled.h2`
     font-size: 1.5rem;
