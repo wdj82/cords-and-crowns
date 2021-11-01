@@ -71,7 +71,8 @@ const Header = styled.header`
     align-items: baseline;
 
     @media ${QUERIES.phone} {
-        padding-left: 32px;
+        padding: 32px;
+        padding-bottom: 0px;
     }
 `;
 
@@ -88,6 +89,11 @@ const Spacer = styled.span`
     min-width: 32px;
     height: 32px;
     min-height: 32px;
+
+    @media ${QUERIES.phone} {
+        height: 16px;
+        min-height: 16px;
+    }
 `;
 
 export default ProductsPage;

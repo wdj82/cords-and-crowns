@@ -114,6 +114,7 @@ const Content = styled(DialogContent)`
     background: white;
     width: 425px;
     height: 100%;
+    overflow: scroll;
 
     @media (prefers-reduced-motion: no-preference) {
         animation: ${slideIn} 500ms both cubic-bezier(0, 0.6, 0.32, 1.06);

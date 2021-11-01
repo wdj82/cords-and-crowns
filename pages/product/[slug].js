@@ -11,6 +11,7 @@ import { useCart } from '../../hooks/useCart';
 import stripeCheckout from '../../util/stripeCheckout';
 import Cart from '../../components/Cart';
 import formatMoney from '../../util/formatMoney';
+import { QUERIES } from '../../util/constants';
 
 function SingleProductPage() {
     const [working, setWorking] = useState(false);
@@ -44,7 +45,7 @@ function SingleProductPage() {
     };
 
     return (
-        <div>
+        <>
             <Head>
                 <title>Cords&amp;Crowns | {name}</title>
             </Head>
@@ -78,7 +79,7 @@ function SingleProductPage() {
                 </Footer>
             )}
             {showCart && <Cart isOpen={showCart} onDismiss={() => setShowCart(false)} />}
-        </div>
+        </>
     );
 }
 
@@ -109,6 +110,12 @@ const ImageWrapper = styled.div`
     display: grid;
     gap: 8px;
     grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+
+    @media ${QUERIES.phone} {
+        display: flex;
+        flex-direction: column;
+        padding: 0px 16px;
+    }
 `;
 
 const Footer = styled.footer`

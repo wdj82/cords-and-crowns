@@ -14,32 +14,29 @@ function Header() {
     const [showContact, setShowContact] = useState(false);
 
     return (
-        <header>
-            <MainHeader>
-                <Logo />
-                <Actions>
-                    {/* <SearchInput /> */}
-                    {/* <Link href='/account'>
+        <MainHeader>
+            <Logo />
+            <Actions>
+                {/* <SearchInput /> */}
+                {/* <Link href='/account'>
                         <IconButton>
                             <VisuallyHidden>Account</VisuallyHidden>
                             <Icon id='user' />
                         </IconButton>
                     </Link> */}
 
-                    <IconButton onClick={() => setShowCart(true)}>
-                        <VisuallyHidden>Open Cart</VisuallyHidden>
-                        <Icon id='shopping-cart' />
-                    </IconButton>
-                    <IconButton onClick={() => setShowContact(true)}>
-                        <VisuallyHidden>Contact Information</VisuallyHidden>
-                        <Icon id='contact' />
-                    </IconButton>
-                </Actions>
-            </MainHeader>
-
+                <IconButton onClick={() => setShowCart(true)}>
+                    <VisuallyHidden>Open Cart</VisuallyHidden>
+                    <Icon id='shopping-cart' />
+                </IconButton>
+                <IconButton onClick={() => setShowContact(true)}>
+                    <VisuallyHidden>Contact Information</VisuallyHidden>
+                    <Icon id='contact' />
+                </IconButton>
+            </Actions>
             {showCart && <Cart isOpen={showCart} onDismiss={() => setShowCart(false)} />}
             {showContact && <Contact isOpen={showContact} onDismiss={() => setShowContact(false)} />}
-        </header>
+        </MainHeader>
     );
 }
 

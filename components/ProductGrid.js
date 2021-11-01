@@ -34,6 +34,7 @@ const Wrapper = styled.div`
     @media ${QUERIES.phone} {
         display: flex;
         flex-direction: column;
+        gap: 0;
     }
 `;
 

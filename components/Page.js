@@ -16,7 +16,7 @@ const Main = styled.div`
     padding: 64px 32px;
 
     @media ${QUERIES.phone} {
-        padding: 48px 0px;
+        padding: 0;
     }
 `;
 

@@ -41,7 +41,7 @@ const Wrapper = styled.div`
     width: fit-content;
 
     @media ${QUERIES.phone} {
-        padding: 32px;
+        padding: 24px 32px;
     }
 `;
 
