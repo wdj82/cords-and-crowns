@@ -4,11 +4,13 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
 
+import styled from 'styled-components';
 import allSlugsQuery from '../../lib/allSlugsQuery';
 import getProductQuery from '../../lib/getProductQuery';
 import { useCart } from '../../hooks/useCart';
 import stripeCheckout from '../../util/stripeCheckout';
 import Cart from '../../components/Cart';
+import formatMoney from '../../util/formatMoney';
 
 function SingleProductPage() {
     const [working, setWorking] = useState(false);
@@ -46,25 +48,33 @@ function SingleProductPage() {
             <Head>
                 <title>Cords&amp;Crowns | {name}</title>
             </Head>
-            <h1>{name}</h1>
-            {available ? <p>{price}</p> : <p>Sold Out</p>}
-            <p>{description}</p>
-            {images.map((image) => (
-                <Image key={image.fileName} src={image.url} alt={name} width={500} height={375} />
-            ))}
-            <button
-                type='button'
-                onClick={() => {
-                    addToCart({ slug, name, price, image: images[0] });
-                    setShowCart(true);
-                }}
-                disabled={!available}
-            >
-                Add to Cart
-            </button>
-            <button type='button' onClick={buyNow} disabled={working || !available}>
-                Buy Now
-            </button>
+            <Header>
+                <h1>{name}</h1>
+                {available ? <p>{formatMoney(price)}</p> : <p>Sold Out</p>}
+                <p>{description}</p>
+            </Header>
+            <ImageWrapper>
+                {images.map((image) => (
+                    <div key={image.fileName}>
+                        <Image src={image.url} alt={name} width={500} height={375} />
+                    </div>
+                ))}
+            </ImageWrapper>
+            <Footer>
+                <button
+                    type='button'
+                    onClick={() => {
+                        addToCart({ slug, name, price, image: images[0] });
+                        setShowCart(true);
+                    }}
+                    disabled={!available}
+                >
+                    Add to Cart
+                </button>
+                <button type='button' onClick={buyNow} disabled={working || !available}>
+                    Buy Now
+                </button>
+            </Footer>
             {showCart && <Cart isOpen={showCart} onDismiss={() => setShowCart(false)} />}
         </div>
     );
@@ -88,5 +98,21 @@ export async function getStaticPaths() {
     }));
     return { paths, fallback: false };
 }
+
+const Header = styled.header`
+    padding: 32px;
+`;
+
+const ImageWrapper = styled.div`
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+`;
+
+const Footer = styled.footer`
+    padding: 32px;
+    display: flex;
+    gap: 16px;
+`;
 
 export default SingleProductPage;

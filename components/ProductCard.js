@@ -7,20 +7,20 @@ import formatMoney from '../util/formatMoney';
 function ProductCard({ name, price, slug, images, available }) {
     return (
         <Link href={`/product/${slug}`} passHref>
-            <Wrapper>
-                <div>
+            <Anchor>
+                <Wrapper>
                     <ProductImage src={images[0]?.url} alt={name} width={500} height={375} />
                     <Row>
                         <p>{name}</p>
                         {available ? <p>{formatMoney(price)}</p> : <p>Sold Out</p>}
                     </Row>
-                </div>
-            </Wrapper>
+                </Wrapper>
+            </Anchor>
         </Link>
     );
 }
 
-const Wrapper = styled.a`
+const Anchor = styled.a`
     text-decoration: none;
 
     &:visited {
@@ -30,6 +30,14 @@ const Wrapper = styled.a`
     &:active {
         text-decoration: none;
     }
+
+    &:link {
+        color: inherit;
+    }
+`;
+
+const Wrapper = styled.div`
+    width: fit-content;
 `;
 
 const ProductImage = styled(Image)`
