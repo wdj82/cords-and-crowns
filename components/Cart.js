@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Link from 'next/link';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
 import styled, { keyframes } from 'styled-components';
 
@@ -37,9 +38,9 @@ function Cart({ isOpen, onDismiss }) {
                 <CartBody>
                     <Items>
                         {keys.map((key) => {
-                            const { slug, name, price, image } = cart[key];
+                            const { slug, price } = cart[key];
                             total += price;
-                            return <CartItem key={slug} slug={slug} name={name} price={price} image={image} />;
+                            return <CartItem key={slug} slug={slug} />;
                         })}
                     </Items>
                     {total > 0 ? (
@@ -47,9 +48,14 @@ function Cart({ isOpen, onDismiss }) {
                             <div>
                                 Subtotal ({keys.length} item{keys.length > 1 && 's'}): {formatMoney(total)}
                             </div>
-                            <button type='button' onClick={handleClick} disabled={working}>
+                            <Button type='button' onClick={() => handleClick} disabled={working}>
                                 Check Out
-                            </button>
+                            </Button>
+                            <Link href='/'>
+                                <Button type='button' onClick={onDismiss}>
+                                    Continue Shopping
+                                </Button>
+                            </Link>
                         </Checkout>
                     ) : (
                         <div>Your Shopping Cart is empty</div>
@@ -123,6 +129,10 @@ const CloseButton = styled(UnstyledButton)`
     color: white;
 `;
 
+const Button = styled(UnstyledButton)`
+    color: blue;
+`;
+
 const Title = styled.h2`
     font-size: 1.5rem;
 `;
@@ -140,6 +150,11 @@ const Items = styled.div`
     gap: 16px;
 `;
 
-const Checkout = styled.div``;
+const Checkout = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 200px;
+`;
 
 export default Cart;

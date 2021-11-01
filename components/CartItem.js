@@ -1,24 +1,50 @@
+import Image from 'next/image';
 import styled from 'styled-components';
 
 import formatMoney from '../util/formatMoney';
 import { useCart } from '../hooks/useCart';
+import UnstyledButton from './UnstyledButton';
 
-function CartItem({ slug, name, price }) {
-    const { removeFromCart } = useCart();
+function CartItem({ slug }) {
+    const { cart, removeFromCart } = useCart();
+    const { name, price, image } = cart[slug];
+
     return (
         <Wrapper>
-            <ImageWrapper>Image</ImageWrapper>
-            <div>{name}</div>
-            <div>{formatMoney(price)}</div>
-            <button type='button' onClick={() => removeFromCart(slug)}>
-                Remove from Cart
-            </button>
+            <div>
+                <Image src={image} alt={name} width={200} height={150} />
+            </div>
+            <Info>
+                <div>{name}</div>
+                <div>
+                    <Money>{formatMoney(price)}</Money>
+                </div>
+                <RemoveButton type='button' onClick={() => removeFromCart(slug)}>
+                    Remove from Cart
+                </RemoveButton>
+            </Info>
         </Wrapper>
     );
 }
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+    display: flex;
+    gap: 16px;
+`;
 
-const ImageWrapper = styled.div``;
+const RemoveButton = styled(UnstyledButton)`
+    color: blue;
+`;
+
+const Info = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8px;
+`;
+
+const Money = styled.span`
+    font-weight: var(--bold);
+`;
 
 export default CartItem;
