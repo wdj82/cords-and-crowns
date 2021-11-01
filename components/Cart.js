@@ -27,25 +27,34 @@ function Cart({ isOpen, onDismiss }) {
         <Overlay isOpen={isOpen} onDismiss={onDismiss}>
             <Backdrop />
             <Content aria-label='Shopping Cart'>
-                <UnstyledButton type='button' onClick={onDismiss}>
-                    <VisuallyHidden>Close Shopping Cart</VisuallyHidden>
-                    <Icon id='close' />
-                </UnstyledButton>
-                {keys.map((key) => {
-                    const { slug, name, price } = cart[key];
-                    total += price;
-                    return <CartItem key={slug} slug={slug} name={name} price={price} />;
-                })}
-                {total > 0 ? (
-                    <div>
-                        <div>Total: {formatMoney(total)}</div>
-                        <button type='button' onClick={handleClick} disabled={working}>
-                            Check Out
-                        </button>
-                    </div>
-                ) : (
-                    <div>Your Shopping Cart is empty</div>
-                )}
+                <Header>
+                    <CloseButton type='button' onClick={onDismiss}>
+                        <VisuallyHidden>Close Shopping Cart</VisuallyHidden>
+                        <Icon id='close' size='36' />
+                    </CloseButton>
+                    <Title>Your Cart</Title>
+                </Header>
+                <CartBody>
+                    <Items>
+                        {keys.map((key) => {
+                            const { slug, name, price, image } = cart[key];
+                            total += price;
+                            return <CartItem key={slug} slug={slug} name={name} price={price} image={image} />;
+                        })}
+                    </Items>
+                    {total > 0 ? (
+                        <Checkout>
+                            <div>
+                                Subtotal ({keys.length} item{keys.length > 1 && 's'}): {formatMoney(total)}
+                            </div>
+                            <button type='button' onClick={handleClick} disabled={working}>
+                                Check Out
+                            </button>
+                        </Checkout>
+                    ) : (
+                        <div>Your Shopping Cart is empty</div>
+                    )}
+                </CartBody>
             </Content>
         </Overlay>
     );
@@ -101,5 +110,36 @@ const Content = styled(DialogContent)`
         animation-delay: 200ms;
     }
 `;
+
+const Header = styled.header`
+    padding: 32px;
+    padding-bottom: 8px;
+`;
+
+const CloseButton = styled(UnstyledButton)`
+    position: absolute;
+    top: 0;
+    left: -48px;
+    color: white;
+`;
+
+const Title = styled.h2`
+    font-size: 1.5rem;
+`;
+
+const CartBody = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+    gap: 32px;
+`;
+
+const Items = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+`;
+
+const Checkout = styled.div``;
 
 export default Cart;

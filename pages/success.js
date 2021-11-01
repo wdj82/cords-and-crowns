@@ -1,49 +1,39 @@
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useCart } from '../hooks/useCart';
+import getOrderQuery from '../lib/getOrderQuery';
 
 import formatMoney from '../util/formatMoney';
-import { getOrder } from '../util/gqlUtil';
 
-function SuccessPage() {
+function SuccessPage(props) {
     const { setCart } = useCart();
-    const router = useRouter();
-
-    const [loading, setLoading] = useState(Boolean(router.query.id));
-    const [orderDetails, setOrderDetails] = useState();
-
     useEffect(() => {
-        const fetchOrder = async () => {
-            const { order } = await getOrder({ id: router.query.id });
-            setLoading(false);
-            setOrderDetails(order);
-        };
+        setCart({});
+    }, [setCart]);
 
-        if (router.query.id) {
-            fetchOrder();
-            setCart({});
-        }
-    }, [router.query.id, setCart]);
-
-    if (loading) return <div>Loading Your Order...</div>;
-
-    if (orderDetails) {
+    if (props) {
         return (
             <div>
                 <h2>Thank you for your order!</h2>
-                {orderDetails.orderItems.map((item) => (
+                {props.orderItems.map((item) => (
                     <div key={item.product.name}>
                         {item.product.name} {formatMoney(item.product.price)}
                     </div>
                 ))}
-                <div>Subtotal: {formatMoney(orderDetails.subtotal)}</div>
-                <div>Tax: {formatMoney(orderDetails.tax)}</div>
-                <div>Total Payment: {formatMoney(orderDetails.total)}</div>
+                <div>Subtotal: {formatMoney(props.subtotal)}</div>
+                <div>Tax: {formatMoney(props.tax)}</div>
+                <div>Total Payment: {formatMoney(props.total)}</div>
             </div>
         );
     }
 
     return <div>There was a problem loading your order details</div>;
+}
+
+export async function getServerSideProps({ query }) {
+    const { order } = await getOrderQuery(query);
+    return {
+        props: order,
+    };
 }
 
 export default SuccessPage;

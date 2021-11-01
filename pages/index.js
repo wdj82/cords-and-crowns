@@ -4,7 +4,8 @@ import styled from 'styled-components';
 
 import ProductGrid from '../components/ProductGrid';
 // import Select from '../components/Select';
-import { getProducts, getSlugs } from '../util/gqlUtil';
+import allProductsQuery from '../lib/allProductsQuery';
+import allSlugsQuery from '../lib/allSlugsQuery';
 
 function ProductsPage() {
     return (
@@ -35,8 +36,8 @@ function ProductsPage() {
 export async function getStaticProps() {
     const queryClient = new QueryClient();
 
-    await queryClient.prefetchQuery('slugs', () => getSlugs());
-    await queryClient.prefetchQuery('products', () => getProducts());
+    await queryClient.prefetchQuery('slugs', () => allSlugsQuery());
+    await queryClient.prefetchQuery('products', () => allProductsQuery());
     return {
         props: {
             dehydratedState: dehydrate(queryClient),

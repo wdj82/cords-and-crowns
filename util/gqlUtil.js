@@ -1,62 +1,3 @@
-import { gql, graphCMSClient, graphCMSOrdersClient } from './graphCMSClient';
-
-const ALL_PRODUCTS_QUERY = gql`
-    query ALL_PRODUCTS_QUERY {
-        products {
-            name
-            price
-            description
-            slug
-            available
-            images(first: 1) {
-                url
-            }
-        }
-    }
-`;
-
-const ALL_SLUGS_QUERY = gql`
-    query ALL_SLUGS_QUERY {
-        products {
-            slug
-        }
-    }
-`;
-
-const SINGLE_ITEM_QUERY = gql`
-    query SINGLE_ITEM_QUERY($slug: String!) {
-        product(where: { slug: $slug }) {
-            name
-            price
-            description
-            slug
-            available
-            images {
-                url
-                fileName
-            }
-        }
-    }
-`;
-
-const GET_ORDER_QUERY = gql`
-    query GET_ORDER_QUERY($id: String!) {
-        order(where: { stripeCheckoutId: $id }) {
-            total
-            subtotal
-            tax
-            orderItems {
-                total
-                product {
-                    slug
-                    name
-                    price
-                }
-            }
-        }
-    }
-`;
-
 // const SIGN_IN_MUTATION = gql`
 //     mutation SIGN_IN_MUTATION($email: String!, $password: String!) {
 //         authenticateUserWithPassword(email: $email, password: $password) {
@@ -107,28 +48,6 @@ const GET_ORDER_QUERY = gql`
 //         }
 //     }
 // `;
-
-async function getProducts() {
-    return graphCMSClient.request(ALL_PRODUCTS_QUERY);
-}
-
-async function getSlugs() {
-    return graphCMSClient.request(ALL_SLUGS_QUERY);
-}
-
-async function getProduct(slug) {
-    return graphCMSClient.request(SINGLE_ITEM_QUERY, { slug });
-}
-
-async function getOrder(id) {
-    try {
-        return graphCMSOrdersClient.request(GET_ORDER_QUERY, id);
-    } catch (error) {
-        console.log(error);
-        return { order: null };
-    }
-}
-
 // async function signInMutation(variables) {
 //     return graphCMSClient.request(SIGN_IN_MUTATION, variables);
 // }
@@ -148,15 +67,3 @@ async function getOrder(id) {
 // async function resetPasswordMutation(variables) {
 //     return graphCMSClient.request(RESET_PASSWORD_MUTATION, variables);
 // }
-
-export {
-    getProducts,
-    getSlugs,
-    getProduct,
-    getOrder,
-    // signInMutation,
-    // signOutMutation,
-    // signUpMutation,
-    // resetPasswordRequestMutation,
-    // resetPasswordMutation,
-};

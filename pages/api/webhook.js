@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-import { graphCMSCreateOrdersClient, gql } from '../../util/graphCMSClient';
+import { graphCMSCreateOrdersClient, gql } from '../../lib/graphCMSClient';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 

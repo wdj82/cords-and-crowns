@@ -4,7 +4,8 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
 
-import { getProduct, getSlugs } from '../../util/gqlUtil';
+import allSlugsQuery from '../../lib/allSlugsQuery';
+import getProductQuery from '../../lib/getProductQuery';
 import { useCart } from '../../hooks/useCart';
 import stripeCheckout from '../../util/stripeCheckout';
 import Cart from '../../components/Cart';
@@ -16,9 +17,13 @@ function SingleProductPage() {
     const router = useRouter();
 
     // enabled option tells the query to wait until the router is ready
-    const { data, error, isLoading } = useQuery(['product', router.query.slug], () => getProduct(router.query.slug), {
-        enabled: !!router.query.slug,
-    });
+    const { data, error, isLoading } = useQuery(
+        ['product', router.query.slug],
+        () => getProductQuery(router.query.slug),
+        {
+            enabled: !!router.query.slug,
+        },
+    );
 
     if (isLoading) return <div>Loading...</div>;
     if (error) {
@@ -67,7 +72,7 @@ function SingleProductPage() {
 
 export async function getStaticProps({ params }) {
     const queryClient = new QueryClient();
-    await queryClient.prefetchQuery(['product', params.slug], () => getProduct(params.slug));
+    await queryClient.prefetchQuery(['product', params.slug], () => getProductQuery(params.slug));
     return {
         props: {
             dehydratedState: dehydrate(queryClient),
@@ -77,8 +82,7 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-    const data = await getSlugs();
-
+    const data = await allSlugsQuery();
     const paths = data?.products.map((product) => ({
         params: { slug: product.slug },
     }));

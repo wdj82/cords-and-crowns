@@ -1,26 +1,9 @@
 import Stripe from 'stripe';
 
-import { graphCMSClient, gql } from '../../util/graphCMSClient';
-
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async (req, res) => {
-    const { keys, successURL, cancelURL } = req.body;
-
-    const { products } = await graphCMSClient.request(
-        gql`
-            query FILTER_SLUGS($slug: [String!]) {
-                products(where: { slug_in: $slug }) {
-                    name
-                    price
-                    slug
-                }
-            }
-        `,
-        {
-            slug: keys,
-        },
-    );
+    const { products, successURL, cancelURL } = req.body;
 
     const lineItems = products.map((product) => ({
         price_data: {

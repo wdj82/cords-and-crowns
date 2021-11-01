@@ -1,8 +1,11 @@
 import { loadStripe } from '@stripe/stripe-js';
+import filterProductsQuery from '../lib/filterProductsQuery';
 
 const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_STRIPE_KEY}`);
 
 async function stripeCheckout(keys) {
+    const { products } = await filterProductsQuery({ slug: keys });
+
     const stripe = await stripePromise;
 
     const session = await fetch('/api/create-checkout-session', {
@@ -11,7 +14,7 @@ async function stripeCheckout(keys) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            keys,
+            products,
             successURL: `${window.location.origin}/success`,
             cancelURL: `${window.location.origin}/`,
         }),

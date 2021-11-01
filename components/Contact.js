@@ -28,7 +28,7 @@ function Contact({ isOpen, onDismiss }) {
 
 const slideIn = keyframes`
   from {
-    transform: translateY(200%);
+    transform: translateY(400%);
   }
   to {
     transform: translateX(0%);
@@ -92,7 +92,7 @@ const CloseButton = styled(UnstyledButton)`
     position: absolute;
     top: -40px;
     left: 0;
-    color: red;
+    color: white;
     width: 48px;
     height: 48px;
 `;

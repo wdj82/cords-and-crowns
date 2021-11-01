@@ -1,11 +1,11 @@
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
-import { getProducts } from '../util/gqlUtil';
+import allProductsQuery from '../lib/allProductsQuery';
 import ProductCard from './ProductCard';
 
 function ProductGrid() {
-    const { data, error, isLoading } = useQuery('products', () => getProducts());
+    const { data, error, isLoading } = useQuery('products', () => allProductsQuery());
 
     //  TODO: Make loading component
     if (isLoading || !data) return <p>Loading...</p>;
