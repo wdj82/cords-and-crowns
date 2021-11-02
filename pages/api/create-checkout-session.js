@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.TEST_STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async (req, res) => {
     try {
@@ -18,7 +18,7 @@ export default async (req, res) => {
                 },
             },
             quantity: 1,
-            tax_rates: [process.env.TEST_STRIPE_TAX_RATE],
+            tax_rates: [process.env.STRIPE_TAX_RATE],
         }));
 
         const session = await stripe.checkout.sessions.create({
