@@ -51,13 +51,13 @@ function SingleProductPage() {
             </Head>
             <Header>
                 <h1>{name}</h1>
-                {available ? <p>{formatMoney(price)}</p> : <p>Sold Out</p>}
+                {available ? <p>{formatMoney(price)}</p> : <SoldOut>Sold Out</SoldOut>}
                 <p>{description}</p>
             </Header>
             <ImageWrapper>
                 {images.map((image) => (
                     <div key={image.fileName}>
-                        <Image src={image.url} alt={name} width={500} height={375} />
+                        <ProductImage src={image.url} alt={name} width={500} height={375} />
                     </div>
                 ))}
             </ImageWrapper>
@@ -108,14 +108,29 @@ const Header = styled.header`
 
 const ImageWrapper = styled.div`
     display: grid;
-    gap: 8px;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 32px;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
 
     @media ${QUERIES.phone} {
         display: flex;
         flex-direction: column;
         padding: 0px 16px;
     }
+
+    /*
+        NextJS workout for image's inline extra spacing
+    */
+    font-size: 0;
+    word-spacing: 0;
+    letter-spacing: 0;
+`;
+
+const ProductImage = styled(Image)`
+    border-radius: 2px;
+`;
+
+const SoldOut = styled.span`
+    color: red;
 `;
 
 const Footer = styled.footer`

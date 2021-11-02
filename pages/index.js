@@ -51,10 +51,6 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: row-reverse;
     align-items: baseline;
-
-    /* @media ${QUERIES.phone} {
-        background: yellow;
-    } */
 `;
 
 // const LeftColumn = styled.div`
