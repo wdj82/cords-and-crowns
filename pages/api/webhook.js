@@ -3,7 +3,7 @@ import { buffer } from 'micro';
 
 import { graphCMSCreateOrdersClient, gql } from '../../lib/graphCMSClient';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.TEST_STRIPE_SECRET_KEY);
 
 export const config = {
     api: {
@@ -23,7 +23,7 @@ export default async (req, res) => {
 
     let event;
     try {
-        event = stripe.webhooks.constructEvent(requestBuffer, sig, process.env.STRIPE_WEBHOOK_SIGNING_SECRET);
+        event = stripe.webhooks.constructEvent(requestBuffer, sig, process.env.TEST_STRIPE_WEBHOOK_SIGNING_SECRET);
     } catch (error) {
         console.log(error);
         res.status(400).send(`Webhook Error: ${error.message}`);

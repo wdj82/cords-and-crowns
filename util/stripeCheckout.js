@@ -1,7 +1,7 @@
 import { loadStripe } from '@stripe/stripe-js';
 import filterProductsQuery from '../lib/filterProductsQuery';
 
-const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_STRIPE_KEY}`);
+const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_TEST_STRIPE_KEY}`);
 
 async function stripeCheckout(keys) {
     const { products } = await filterProductsQuery({ slug: keys });
