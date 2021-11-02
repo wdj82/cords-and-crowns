@@ -67,10 +67,12 @@ const ProductImage = styled(Image)`
     transition: transform 400ms;
     will-change: transform;
 
-    ${Anchor}:hover &,
-    ${Anchor}:focus & and (prefers-reduced-motion: no-preference) {
-        transform: scale(1.1);
-        transition: transform 200ms;
+    @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+        ${Anchor}:hover &,
+        ${Anchor}:focus & {
+            transform: scale(1.1);
+            transition: transform 200ms;
+        }
     }
 `;
 
