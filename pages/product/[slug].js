@@ -40,7 +40,7 @@ function SingleProductPage() {
     const buyNow = async (e) => {
         e.preventDefault();
         setWorking(true);
-        await stripeCheckout([slug]);
+        await stripeCheckout({ [slug]: { slug, name, price, image: images[0].url } });
         setWorking(false);
     };
 

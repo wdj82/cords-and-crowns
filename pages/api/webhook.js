@@ -45,6 +45,7 @@ export default async (req, res) => {
     // console.log(lineItems);
     // console.log(lineItems[0].price.product);
 
+    // TODO: account creation or update with the email
     // email: session.customer.email,
     const slugs = [];
     const data = {
