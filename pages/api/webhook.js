@@ -18,9 +18,9 @@ export default async (req, res) => {
         return;
     }
 
+    // make sure the request is actually from stripe
     const requestBuffer = await buffer(req);
     const sig = req.headers['stripe-signature'];
-
     let event;
     try {
         event = stripe.webhooks.constructEvent(requestBuffer, sig, process.env.STRIPE_WEBHOOK_SIGNING_SECRET);
@@ -37,44 +37,63 @@ export default async (req, res) => {
 
     console.log('eventId: ', event.id);
 
+    // get the order info from stripe expanding on product info
     const session = await stripe.checkout.sessions.retrieve(event.data.object.id, {
         expand: ['line_items.data.price.product', 'customer'],
     });
-
     const lineItems = session.line_items.data;
+    const { email } = session.customer;
+    const slugs = [];
+
     // console.log(lineItems);
     // console.log(lineItems[0].price.product);
+    // console.log(session.customer.email);
+    // console.log(session.customer.shipping);
 
-    // TODO: account creation or update with the email
-    // email: session.customer.email,
-    const slugs = [];
-    const data = {
-        tax: session.total_details.amount_tax,
-        subtotal: session.amount_subtotal,
-        total: session.amount_total,
-        stripeCheckoutId: session.id,
-        orderItems: {
-            create: lineItems.map((item) => {
-                slugs.push(item.price.product.metadata.productSlug);
-                return {
-                    price: item.amount_total,
-                    slug: item.price.product.metadata.productSlug,
-                    image: item.price.product.images[0],
-                    name: item.price.product.name,
-                };
-            }),
+    // create the order for the cms
+    const data = [
+        {
+            Order: {
+                address: session.customer.shipping,
+                tax: session.total_details.amount_tax,
+                subtotal: session.amount_subtotal,
+                total: session.amount_total,
+                stripeCheckoutId: session.id,
+                orderItems: {
+                    create: lineItems.map((item) => {
+                        slugs.push(item.price.product.metadata.productSlug);
+                        return {
+                            price: item.amount_total,
+                            slug: item.price.product.metadata.productSlug,
+                            image: item.price.product.images[0],
+                            name: item.price.product.name,
+                        };
+                    }),
+                },
+            },
         },
-    };
-    // console.log(data);
-    // console.log(data.orderItems);
-    // console.log(slugs);
+    ];
 
-    // create the order, all order items for it, and set sold products to unavailable
+    // console.log(data);
+    // console.log(data[0].Order.orderItems);
+    // console.log('slugs:', slugs);
+
+    // create or update an account with the new order and make bought products unavailable
     try {
-        const { createOrder } = await graphCMSCreateOrdersClient.request(
+        await graphCMSCreateOrdersClient.request(
             gql`
-                mutation CreateOrderMutation($data: OrderCreateInput!, $slugs: [String!]) {
-                    createOrder(data: $data) {
+                mutation UPSERT_ACCOUNT_MUTATION(
+                    $email: String!
+                    $data: [AccountOrdersCreateInput!]
+                    $slugs: [String!]
+                ) {
+                    upsertAccount(
+                        where: { email: $email }
+                        upsert: {
+                            create: { email: $email, orders: { create: $data } }
+                            update: { orders: { create: $data } }
+                        }
+                    ) {
                         id
                     }
 
@@ -89,14 +108,14 @@ export default async (req, res) => {
             `,
             {
                 data,
+                email,
                 slugs,
             },
         );
-        console.log('createOrder: ', createOrder);
+        console.log('created order');
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'There was a problem creating the order on the backend' });
-        return;
     }
 
     res.json({ message: 'success' });
