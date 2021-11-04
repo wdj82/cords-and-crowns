@@ -27,10 +27,10 @@ function SuccessPage(order) {
                         Order #: <Money>{order.id}</Money>
                     </div>
                 </Header>
-                {order.orderItems.map(({ product }) => (
+                {order.orderItems.map((product) => (
                     <ProductWrapper key={product.slug}>
                         <div>
-                            <Image src={product.images[0].url} alt={product.name} width={200} height={150} />
+                            <Image src={product.image} alt={product.name} width={200} height={150} />
                         </div>
                         <Product>
                             <div>{product.name}</div>

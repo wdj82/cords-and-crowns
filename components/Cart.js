@@ -15,13 +15,13 @@ import { QUERIES } from '../util/constants';
 function Cart({ isOpen, onDismiss }) {
     const [working, setWorking] = useState(false);
     const { cart } = useCart();
-    const keys = Object.keys(cart);
     let total = 0;
+    const slugs = Object.keys(cart);
 
     const handleClick = async (e) => {
         e.preventDefault();
         setWorking(true);
-        await stripeCheckout(keys);
+        await stripeCheckout(cart);
         setWorking(false);
     };
 
@@ -38,7 +38,7 @@ function Cart({ isOpen, onDismiss }) {
                 </Header>
                 <CartBody>
                     <Items>
-                        {keys.map((key) => {
+                        {slugs.map((key) => {
                             const { slug, price } = cart[key];
                             total += price;
                             return <CartItem key={slug} slug={slug} />;
@@ -47,7 +47,7 @@ function Cart({ isOpen, onDismiss }) {
                     {total > 0 ? (
                         <Checkout>
                             <div>
-                                Subtotal ({keys.length} item{keys.length > 1 && 's'}):{' '}
+                                Subtotal ({slugs.length} item{slugs.length > 1 && 's'}):{' '}
                                 <Money>{formatMoney(total)}</Money>
                             </div>
                             <Buttons>

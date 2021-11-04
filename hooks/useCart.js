@@ -40,6 +40,5 @@ export function useCartState() {
 }
 
 export function useCart() {
-    const cart = useContext(CartContext);
-    return cart;
+    return useContext(CartContext);
 }
