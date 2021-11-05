@@ -3,8 +3,8 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { useQueries } from 'react-query';
 
-import formatMoney from '../util/formatMoney';
-import stripeCheckout from '../util/stripeCheckout';
+import formatMoney from '../lib/formatMoney';
+import stripeCheckout from '../lib/stripeCheckout';
 import CartItem from './CartItem';
 import { useCart } from '../hooks/useCart';
 import getProductQuery from '../lib/getProductQuery';

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
 
-import formatMoney from '../util/formatMoney';
+import formatMoney from '../lib/formatMoney';
 import { QUERIES } from '../util/constants';
 
 function ProductCard({ name, price, slug, images, available }) {

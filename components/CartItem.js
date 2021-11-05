@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 
-import formatMoney from '../util/formatMoney';
+import formatMoney from '../lib/formatMoney';
 import { useCart } from '../hooks/useCart';
 import UnstyledButton from './UnstyledButton';
 

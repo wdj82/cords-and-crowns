@@ -8,9 +8,9 @@ import styled from 'styled-components';
 import allSlugsQuery from '../../lib/allSlugsQuery';
 import getProductQuery from '../../lib/getProductQuery';
 import { useCart } from '../../hooks/useCart';
-import stripeCheckout from '../../util/stripeCheckout';
+import stripeCheckout from '../../lib/stripeCheckout';
 import Cart from '../../components/Cart';
-import formatMoney from '../../util/formatMoney';
+import formatMoney from '../../lib/formatMoney';
 import { QUERIES } from '../../util/constants';
 
 function SingleProductPage() {

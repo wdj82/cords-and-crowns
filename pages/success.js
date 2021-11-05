@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { useCart } from '../hooks/useCart';
 import getOrderQuery from '../lib/getOrderQuery';
-import formatMoney from '../util/formatMoney';
+import formatMoney from '../lib/formatMoney';
 
 function SuccessPage(order) {
     // clear out the cart on purchase success
