@@ -54,6 +54,7 @@ export default async (req, res) => {
     const data = [
         {
             Order: {
+                orderStatus: 'Processing',
                 address: session.customer.shipping,
                 tax: session.total_details.amount_tax,
                 subtotal: session.amount_subtotal,
@@ -80,7 +81,10 @@ export default async (req, res) => {
 
     // create or update an account with the new order and make bought products unavailable
     try {
-        await graphCMSCreateOrdersClient.request(
+        const {
+            upsertAccount: { orders },
+            updateManyProducts: { count },
+        } = await graphCMSCreateOrdersClient.request(
             gql`
                 mutation UPSERT_ACCOUNT_MUTATION(
                     $email: String!
@@ -94,7 +98,12 @@ export default async (req, res) => {
                             update: { orders: { create: $data } }
                         }
                     ) {
-                        id
+                        orders(last: 1) {
+                            ... on Order {
+                                stripeCheckoutId
+                                id
+                            }
+                        }
                     }
 
                     updateManyProducts(where: { slug_in: $slugs }, data: { available: false }) {
@@ -112,7 +121,8 @@ export default async (req, res) => {
                 slugs,
             },
         );
-        console.log('created order');
+        console.log('created order:', orders);
+        console.log(`updated ${count} product${count > 1 ? 's' : ''}`);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'There was a problem creating the order on the backend' });
