@@ -14,6 +14,12 @@ function SuccessPage(order) {
         setCart({});
     }, [setCart]);
 
+    if (Object.keys(order).length === 0) {
+        return (
+            <Header>There was a problem loading your order details. You should receive an email invoice soon.</Header>
+        );
+    }
+
     if (order) {
         return (
             <div>
@@ -52,15 +58,16 @@ function SuccessPage(order) {
             </div>
         );
     }
-
-    return <Header>There was a problem loading your order details. You should receive an email invoice soon.</Header>;
 }
 
 export async function getServerSideProps({ query }) {
     const { order } = await getOrderQuery(query);
-    return {
-        props: order,
-    };
+    if (order !== null) {
+        return {
+            props: order,
+        };
+    }
+    return { props: {} };
 }
 
 const Header = styled.div`

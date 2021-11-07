@@ -1,17 +1,21 @@
 import NextAuth from 'next-auth';
-import GithubProvider from 'next-auth/providers/github';
 import EmailProvider from 'next-auth/providers/email';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+let prisma;
+
+if (process.env.NODE_ENV === 'production') {
+    prisma = new PrismaClient();
+} else {
+    if (!global.prisma) {
+        global.prisma = new PrismaClient();
+    }
+    prisma = global.prisma;
+}
 
 export default NextAuth({
     providers: [
-        GithubProvider({
-            clientId: process.env.GITHUB_ID,
-            clientSecret: process.env.GITHUB_SECRET,
-        }),
         EmailProvider({
             server: {
                 host: process.env.EMAIL_HOST,
