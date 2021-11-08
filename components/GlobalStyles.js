@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components/';
+import styled, { createGlobalStyle } from 'styled-components/';
 
 const GlobalStyles = createGlobalStyle`
 /* http://meyerweb.com/eric/tools/css/reset/
@@ -99,6 +99,10 @@ input, button, textarea, select {
     font: inherit;
 }
 
+`;
+
+export const Bold = styled.span`
+    font-weight: var(--bold);
 `;
 
 export default GlobalStyles;

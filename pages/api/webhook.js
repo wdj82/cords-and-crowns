@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 import { buffer } from 'micro';
+import nodemailer from 'nodemailer';
 
 import { graphCMSCreateOrdersClient, gql } from '../../lib/graphCMSClient';
 
@@ -126,6 +127,27 @@ export default async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'There was a problem creating the order on the backend' });
+    }
+
+    try {
+        // send email of order details
+        const smtp = nodemailer.createTransport({
+            host: process.env.EMAIL_HOST,
+            port: process.env.EMAIL_PORT,
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASSWORD,
+            },
+        });
+        smtp.sendMail({
+            to: email,
+            from: 'admin@example.com',
+            subject: 'Testing Email Sends',
+            html: '<p>Sending you order details<p>',
+        });
+        console.log('order email sent');
+    } catch (error) {
+        console.error('ERROR sending order email: ', error);
     }
 
     res.json({ message: 'success' });

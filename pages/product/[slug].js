@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
 
 import styled from 'styled-components';
+import { Bold } from '../../components/GlobalStyles';
 import allSlugsQuery from '../../lib/allSlugsQuery';
 import getProductQuery from '../../lib/getProductQuery';
 import { useCart } from '../../hooks/useCart';
@@ -51,7 +52,13 @@ function SingleProductPage() {
             </Head>
             <Header>
                 <h1>{name}</h1>
-                {available ? <p>{formatMoney(price)}</p> : <SoldOut>Sold Out</SoldOut>}
+                {available ? (
+                    <p>
+                        <Bold>{formatMoney(price)}</Bold>
+                    </p>
+                ) : (
+                    <SoldOut>Sold Out</SoldOut>
+                )}
                 <p>{description}</p>
             </Header>
             <ImageWrapper>

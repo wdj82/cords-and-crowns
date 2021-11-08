@@ -1,4 +1,5 @@
 import { useSession, signIn, signOut, getSession } from 'next-auth/react';
+import styled from 'styled-components';
 
 import allOrdersQuery from '../lib/allOrdersQuery';
 import formatMoney from '../lib/formatMoney';
@@ -6,7 +7,7 @@ import formatMoney from '../lib/formatMoney';
 function OrdersPage({ orders }) {
     const { data: session, status } = useSession();
     // console.log({ session, status });
-    console.log(orders);
+    // console.log(orders);
 
     if (status === 'authenticated') {
         return (
@@ -21,7 +22,9 @@ function OrdersPage({ orders }) {
                             <div>Shipped To: {order.address.name}</div>
                             <div>Order ID: {order.id}</div>
                             <div>Status: {order.orderStatus}</div>
-                            <div>Total: {formatMoney(order.total)}</div>
+                            <div>
+                                Total: <Bold>{formatMoney(order.total)}</Bold>
+                            </div>
                             <br />
                         </div>
                     ))
@@ -57,5 +60,9 @@ export async function getServerSideProps(ctx) {
     }
     return { props: { session } };
 }
+
+const Bold = styled.span`
+    font-weight: var(--bold);
+`;
 
 export default OrdersPage;

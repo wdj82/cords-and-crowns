@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Head from 'next/head';
 import styled from 'styled-components';
 
+import { Bold } from '../components/GlobalStyles';
 import { useCart } from '../hooks/useCart';
 import getOrderQuery from '../lib/getOrderQuery';
 import formatMoney from '../lib/formatMoney';
@@ -30,7 +31,7 @@ function SuccessPage(order) {
                     <h2>Thank you for your order!</h2>
                     <h3>You should receive an email invoice soon.</h3>
                     <div>
-                        Order #: <Money>{order.id}</Money>
+                        Order #: <Bold>{order.id}</Bold>
                     </div>
                 </Header>
                 {order.orderItems.map((product) => (
@@ -40,19 +41,19 @@ function SuccessPage(order) {
                         </div>
                         <Product>
                             <div>{product.name}</div>
-                            <Money>{formatMoney(product.price)}</Money>
+                            <Bold>{formatMoney(product.price)}</Bold>
                         </Product>
                     </ProductWrapper>
                 ))}
                 <Footer>
                     <div>
-                        Subtotal: <Money>{formatMoney(order.subtotal)}</Money>
+                        Subtotal: <Bold>{formatMoney(order.subtotal)}</Bold>
                     </div>
                     <div>
-                        Tax: <Money>{formatMoney(order.tax)}</Money>
+                        Tax: <Bold>{formatMoney(order.tax)}</Bold>
                     </div>
                     <div>
-                        Total Payment: <Money>{formatMoney(order.total)}</Money>
+                        Total Payment: <Bold>{formatMoney(order.total)}</Bold>
                     </div>
                 </Footer>
             </div>
@@ -63,6 +64,8 @@ function SuccessPage(order) {
 export async function getServerSideProps({ query }) {
     const { order } = await getOrderQuery(query);
     if (order !== null) {
+        // console.log(order);
+
         return {
             props: order,
         };
@@ -83,10 +86,6 @@ const ProductWrapper = styled.div`
 const Product = styled.div`
     display: flex;
     flex-direction: column;
-`;
-
-const Money = styled.span`
-    font-weight: var(--bold);
 `;
 
 const Footer = styled.footer`
