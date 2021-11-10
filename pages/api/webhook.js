@@ -108,7 +108,6 @@ export default async (req, res) => {
         const smtp = nodemailer.createTransport({
             host: process.env.EMAIL_HOST,
             port: process.env.EMAIL_PORT,
-            secure: process.env.NODE_ENV !== 'development',
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASSWORD,
