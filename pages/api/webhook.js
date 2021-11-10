@@ -2,11 +2,11 @@ import Stripe from 'stripe';
 import { buffer } from 'micro';
 import nodemailer from 'nodemailer';
 
-import { graphCMSCreateOrdersClient, gql } from '../../lib/graphCMSClient';
 import formatMoney from '../../lib/formatMoney';
 import createHTML from '../../lib/createHTML';
+import upsertAccountMutation from '../../lib/upsertAccountMutation';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.TEST_STRIPE_SECRET_KEY);
 
 export const config = {
     api: {
@@ -26,7 +26,7 @@ export default async (req, res) => {
     const sig = req.headers['stripe-signature'];
     let event;
     try {
-        event = stripe.webhooks.constructEvent(requestBuffer, sig, process.env.STRIPE_WEBHOOK_SIGNING_SECRET);
+        event = stripe.webhooks.constructEvent(requestBuffer, sig, process.env.TEST_STRIPE_WEBHOOK_SIGNING_SECRET);
     } catch (error) {
         console.log(error);
         res.status(400).send(`Webhook Error: ${error.message}`);
@@ -89,43 +89,7 @@ export default async (req, res) => {
         const {
             upsertAccount: { orders },
             updateManyProducts: { count },
-        } = await graphCMSCreateOrdersClient.request(
-            gql`
-                mutation UPSERT_ACCOUNT_MUTATION(
-                    $email: String!
-                    $data: [AccountOrdersCreateInput!]
-                    $slugs: [String!]
-                ) {
-                    upsertAccount(
-                        where: { email: $email }
-                        upsert: {
-                            create: { email: $email, orders: { create: $data } }
-                            update: { orders: { create: $data } }
-                        }
-                    ) {
-                        orders(last: 1) {
-                            ... on Order {
-                                stripeCheckoutId
-                                id
-                            }
-                        }
-                    }
-
-                    updateManyProducts(where: { slug_in: $slugs }, data: { available: false }) {
-                        count
-                    }
-
-                    publishManyProducts(where: { slug_in: $slugs }, to: PUBLISHED) {
-                        count
-                    }
-                }
-            `,
-            {
-                data,
-                email,
-                slugs,
-            },
-        );
+        } = await upsertAccountMutation(data, email, slugs);
         id = orders.id;
         console.log('created order:', orders);
         console.log(`updated ${count} product${count > 1 ? 's' : ''}`);

@@ -9,10 +9,12 @@ import formatMoney from '../lib/formatMoney';
 
 function SuccessPage(order) {
     // clear out the cart on purchase success
-    const { clearCart } = useCart();
+    const { cart, clearCart } = useCart();
     useEffect(() => {
-        clearCart();
-    }, [clearCart]);
+        if (Object.keys(cart).length > 0) {
+            clearCart();
+        }
+    }, [cart, clearCart]);
 
     // check if order object is empty
     if (Object.keys(order).length === 0) {

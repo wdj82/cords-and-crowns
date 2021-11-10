@@ -2,7 +2,7 @@ import Stripe from 'stripe';
 
 import getMultiProductsQuery from '../../lib/getMultiProductsQuery';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.TEST_STRIPE_SECRET_KEY);
 
 export default async (req, res) => {
     try {
@@ -25,7 +25,7 @@ export default async (req, res) => {
                 },
             },
             quantity: 1,
-            tax_rates: [process.env.STRIPE_TAX_RATE],
+            tax_rates: [process.env.TEST_STRIPE_TAX_RATE],
         }));
 
         // create a stripe session the user will be redirected to
