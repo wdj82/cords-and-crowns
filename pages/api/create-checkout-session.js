@@ -15,6 +15,7 @@ export default async (req, res) => {
                     metadata: {
                         productSlug: product.slug,
                     },
+                    images: [product.image],
                 },
             },
             quantity: 1,

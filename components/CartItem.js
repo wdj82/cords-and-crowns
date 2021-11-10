@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 
-import formatMoney from '../util/formatMoney';
+import formatMoney from '../lib/formatMoney';
 import { useCart } from '../hooks/useCart';
 import UnstyledButton from './UnstyledButton';
 
@@ -17,7 +17,7 @@ function CartItem({ slug }) {
             <Info>
                 <div>{name}</div>
                 <div>
-                    <Money>{formatMoney(price)}</Money>
+                    <Bold>{formatMoney(price)}</Bold>
                 </div>
                 <RemoveButton type='button' onClick={() => removeFromCart(slug)}>
                     Remove from Cart
@@ -46,7 +46,7 @@ const Info = styled.div`
     padding: 8px;
 `;
 
-const Money = styled.span`
+export const Bold = styled.span`
     font-weight: var(--bold);
 `;
 

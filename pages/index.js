@@ -43,6 +43,7 @@ export async function getStaticProps() {
         props: {
             dehydratedState: dehydrate(queryClient),
         },
+        // revalidate doesn't work currently on netlify
         // revalidate: 60,
     };
 }

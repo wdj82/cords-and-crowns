@@ -8,9 +8,9 @@ import styled from 'styled-components';
 import allSlugsQuery from '../../lib/allSlugsQuery';
 import getProductQuery from '../../lib/getProductQuery';
 import { useCart } from '../../hooks/useCart';
-import stripeCheckout from '../../util/stripeCheckout';
+import stripeCheckout from '../../lib/stripeCheckout';
 import Cart from '../../components/Cart';
-import formatMoney from '../../util/formatMoney';
+import formatMoney from '../../lib/formatMoney';
 import { QUERIES } from '../../util/constants';
 
 function SingleProductPage() {
@@ -40,7 +40,7 @@ function SingleProductPage() {
     const buyNow = async (e) => {
         e.preventDefault();
         setWorking(true);
-        await stripeCheckout([slug]);
+        await stripeCheckout([{ data }]);
         setWorking(false);
     };
 
@@ -51,7 +51,13 @@ function SingleProductPage() {
             </Head>
             <Header>
                 <h1>{name}</h1>
-                {available ? <p>{formatMoney(price)}</p> : <SoldOut>Sold Out</SoldOut>}
+                {available ? (
+                    <p>
+                        <Bold>{formatMoney(price)}</Bold>
+                    </p>
+                ) : (
+                    <SoldOut>Sold Out</SoldOut>
+                )}
                 <p>{description}</p>
             </Header>
             <ImageWrapper>
@@ -161,6 +167,10 @@ const BuyButton = styled(Button)`
     &:focus {
         background: hsl(0, 80%, 50%);
     }
+`;
+
+export const Bold = styled.span`
+    font-weight: var(--bold);
 `;
 
 export default SingleProductPage;

@@ -1,7 +1,10 @@
 import Stripe from 'stripe';
 import { buffer } from 'micro';
+import nodemailer from 'nodemailer';
 
 import { graphCMSCreateOrdersClient, gql } from '../../lib/graphCMSClient';
+import formatMoney from '../../lib/formatMoney';
+import createHTML from '../../lib/createHTML';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -18,9 +21,9 @@ export default async (req, res) => {
         return;
     }
 
+    // make sure the request is actually from stripe
     const requestBuffer = await buffer(req);
     const sig = req.headers['stripe-signature'];
-
     let event;
     try {
         event = stripe.webhooks.constructEvent(requestBuffer, sig, process.env.STRIPE_WEBHOOK_SIGNING_SECRET);
@@ -37,81 +40,129 @@ export default async (req, res) => {
 
     console.log('eventId: ', event.id);
 
+    // get the order info from stripe expanding on product info
     const session = await stripe.checkout.sessions.retrieve(event.data.object.id, {
         expand: ['line_items.data.price.product', 'customer'],
     });
 
     const lineItems = session.line_items.data;
+    const { email } = session.customer;
+    const slugs = [];
 
-    const data = {
-        email: session.customer.email,
-        tax: session.total_details.amount_tax,
-        subtotal: session.amount_subtotal,
-        total: session.amount_total,
-        stripeCheckoutId: session.id,
-        orderItems: {
-            create: lineItems.map((item) => ({
-                total: item.amount_total,
-                product: {
-                    connect: {
-                        slug: item.price.product.metadata.productSlug,
-                    },
+    // console.log(lineItems);
+    // console.log(lineItems[0].price.product);
+    // console.log(session.customer.email);
+    // console.log(session.customer.shipping);
+
+    // create the order for the cms
+    const data = [
+        {
+            Order: {
+                orderStatus: 'Processing',
+                address: session.customer.shipping,
+                tax: session.total_details.amount_tax,
+                subtotal: session.amount_subtotal,
+                total: session.amount_total,
+                stripeCheckoutId: session.id,
+                orderItems: {
+                    create: lineItems.map((item) => {
+                        slugs.push(item.price.product.metadata.productSlug);
+                        return {
+                            price: item.amount_total,
+                            slug: item.price.product.metadata.productSlug,
+                            image: item.price.product.images[0],
+                            name: item.price.product.name,
+                        };
+                    }),
                 },
-            })),
+            },
         },
-    };
+    ];
 
+    // console.log(data);
+    // console.log(data[0].Order.orderItems);
+    // console.log('slugs:', slugs);
+
+    // create or update an account with the new order and make bought products unavailable
+    let id = null;
     try {
-        const { createOrder } = await graphCMSCreateOrdersClient.request(
+        const {
+            upsertAccount: { orders },
+            updateManyProducts: { count },
+        } = await graphCMSCreateOrdersClient.request(
             gql`
-                mutation CreateOrderMutation($data: OrderCreateInput!) {
-                    createOrder(data: $data) {
-                        id
+                mutation UPSERT_ACCOUNT_MUTATION(
+                    $email: String!
+                    $data: [AccountOrdersCreateInput!]
+                    $slugs: [String!]
+                ) {
+                    upsertAccount(
+                        where: { email: $email }
+                        upsert: {
+                            create: { email: $email, orders: { create: $data } }
+                            update: { orders: { create: $data } }
+                        }
+                    ) {
+                        orders(last: 1) {
+                            ... on Order {
+                                stripeCheckoutId
+                                id
+                            }
+                        }
+                    }
+
+                    updateManyProducts(where: { slug_in: $slugs }, data: { available: false }) {
+                        count
+                    }
+
+                    publishManyProducts(where: { slug_in: $slugs }, to: PUBLISHED) {
+                        count
                     }
                 }
             `,
             {
                 data,
+                email,
+                slugs,
             },
         );
-        console.log('createOrder: ', createOrder);
+        id = orders.id;
+        console.log('created order:', orders);
+        console.log(`updated ${count} product${count > 1 ? 's' : ''}`);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'There was a problem creating the order on the backend' });
         return;
     }
 
-    // make purchased products unavailable
+    const { Order: order } = data[0];
+
+    const htmlMessage = createHTML(email, id, order, session.customer.created);
+
     try {
-        const slugs = lineItems.map((item) => item.price.product.metadata.productSlug);
-        await graphCMSCreateOrdersClient.request(
-            gql`
-                mutation ($data: [String!]) {
-                    updateManyProductsConnection(where: { slug_in: $data }, data: { available: false }) {
-                        edges {
-                            node {
-                                slug
-                                available
-                            }
-                        }
-                    }
-                    publishManyProductsConnection(where: { slug_in: $data }, to: PUBLISHED) {
-                        edges {
-                            node {
-                                id
-                            }
-                        }
-                    }
-                }
-            `,
-            {
-                data: slugs,
+        // send email of order details
+        const smtp = nodemailer.createTransport({
+            host: process.env.EMAIL_HOST,
+            port: process.env.EMAIL_PORT,
+            secure: process.env.NODE_ENV !== 'development',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASSWORD,
             },
-        );
-        console.log('updated', slugs);
+        });
+        smtp.sendMail({
+            to: email,
+            from: 'admin@example.com',
+            subject: 'Testing Email Sends',
+            text: `
+            Thank you for your order! Order #: ${id}. Total: ${formatMoney(order.total)}. 
+            We will email you when your order is shipped. Thank you for shopping from us!
+            `,
+            html: htmlMessage,
+        });
+        console.log('order email sent');
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'There was a problem updating the products on the backend' });
+        console.error('ERROR sending order email:', error);
     }
 
     res.json({ message: 'success' });

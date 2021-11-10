@@ -5,14 +5,28 @@ import styled from 'styled-components';
 
 import { useCart } from '../hooks/useCart';
 import getOrderQuery from '../lib/getOrderQuery';
-import formatMoney from '../util/formatMoney';
+import formatMoney from '../lib/formatMoney';
 
 function SuccessPage(order) {
     // clear out the cart on purchase success
-    const { setCart } = useCart();
+    const { clearCart } = useCart();
     useEffect(() => {
-        setCart({});
-    }, [setCart]);
+        clearCart();
+    }, [clearCart]);
+
+    // check if order object is empty
+    if (Object.keys(order).length === 0) {
+        return (
+            <>
+                <Head>
+                    <title>Cords&amp;Crowns</title>
+                </Head>
+                <Header>
+                    There was a problem loading your order details. You should receive an email invoice soon.
+                </Header>
+            </>
+        );
+    }
 
     if (order) {
         return (
@@ -24,43 +38,46 @@ function SuccessPage(order) {
                     <h2>Thank you for your order!</h2>
                     <h3>You should receive an email invoice soon.</h3>
                     <div>
-                        Order #: <Money>{order.id}</Money>
+                        Order #: <Bold>{order.id}</Bold>
                     </div>
                 </Header>
-                {order.orderItems.map(({ product }) => (
+                {order.orderItems.map((product) => (
                     <ProductWrapper key={product.slug}>
                         <div>
-                            <Image src={product.images[0].url} alt={product.name} width={200} height={150} />
+                            <Image src={product.image} alt={product.name} width={200} height={150} />
                         </div>
                         <Product>
                             <div>{product.name}</div>
-                            <Money>{formatMoney(product.price)}</Money>
+                            <Bold>{formatMoney(product.price)}</Bold>
                         </Product>
                     </ProductWrapper>
                 ))}
                 <Footer>
                     <div>
-                        Subtotal: <Money>{formatMoney(order.subtotal)}</Money>
+                        Subtotal: <Bold>{formatMoney(order.subtotal)}</Bold>
                     </div>
                     <div>
-                        Tax: <Money>{formatMoney(order.tax)}</Money>
+                        Tax: <Bold>{formatMoney(order.tax)}</Bold>
                     </div>
                     <div>
-                        Total Payment: <Money>{formatMoney(order.total)}</Money>
+                        Total Payment: <Bold>{formatMoney(order.total)}</Bold>
                     </div>
                 </Footer>
             </div>
         );
     }
-
-    return <Header>There was a problem loading your order details. You should receive an email invoice soon.</Header>;
 }
 
 export async function getServerSideProps({ query }) {
     const { order } = await getOrderQuery(query);
-    return {
-        props: order,
-    };
+    if (order !== null) {
+        // console.log(order);
+
+        return {
+            props: order,
+        };
+    }
+    return { props: {} };
 }
 
 const Header = styled.div`
@@ -78,12 +95,12 @@ const Product = styled.div`
     flex-direction: column;
 `;
 
-const Money = styled.span`
-    font-weight: var(--bold);
-`;
-
 const Footer = styled.footer`
     padding: 16px;
+`;
+
+export const Bold = styled.span`
+    font-weight: var(--bold);
 `;
 
 export default SuccessPage;
