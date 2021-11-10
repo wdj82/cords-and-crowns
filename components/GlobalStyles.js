@@ -77,6 +77,9 @@ const GlobalStyles = createGlobalStyle`
         --gray-700: hsl(220deg 5% 40%);
         --gray-900: hsl(220deg 3% 20%);
 
+        --red-500: hsl(0, 50%, 50%);
+        --red-100: hsl(0, 80%, 50%);
+
         --color-backdrop: hsl(220deg 5% 40% / 0.8);
 
         /*

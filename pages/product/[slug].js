@@ -124,7 +124,7 @@ const ImageWrapper = styled.div`
     }
 
     /*
-        NextJS workout for image's inline extra spacing
+        NextJS workaround for image's inline extra spacing
     */
     font-size: 0;
     word-spacing: 0;
@@ -161,11 +161,11 @@ const Button = styled.button`
 `;
 
 const BuyButton = styled(Button)`
-    background: hsl(0, 50%, 50%);
+    background: var(--red-500);
 
     &:hover,
     &:focus {
-        background: hsl(0, 80%, 50%);
+        background: var(--red-100);
     }
 `;
 

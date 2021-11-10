@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { useCart } from '../hooks/useCart';
 import Cart from './Cart';
 import Contact from './Contact';
 import Icon from './Icon';
@@ -12,6 +13,12 @@ import VisuallyHidden from './VisuallyHidden';
 function Header() {
     const [showCart, setShowCart] = useState(false);
     const [showContact, setShowContact] = useState(false);
+    const { cart } = useCart();
+    const [cartTotal, setCartTotal] = useState(0);
+
+    useEffect(() => {
+        setCartTotal(Object.keys(cart).length);
+    }, [cart]);
 
     return (
         <MainHeader>
@@ -28,7 +35,9 @@ function Header() {
                 <IconButton onClick={() => setShowCart(true)}>
                     <VisuallyHidden>Open Cart</VisuallyHidden>
                     <Icon id='shopping-cart' />
+                    {cartTotal > 0 && <CartNumber>{cartTotal}</CartNumber>}
                 </IconButton>
+
                 <IconButton onClick={() => setShowContact(true)}>
                     <VisuallyHidden>Contact Information</VisuallyHidden>
                     <Icon id='contact' />
@@ -50,15 +59,33 @@ const MainHeader = styled.header`
 
 const Actions = styled.div`
     display: flex;
-    gap: 32px;
+    gap: 56px;
 `;
 
 const IconButton = styled(UnstyledButton)`
+    position: relative;
     color: var(--gray-700);
 
     &:hover {
         color: var(--black);
     }
+`;
+
+const CartNumber = styled.span`
+    position: absolute;
+    min-width: 20px;
+    height: 20px;
+    padding: 4px;
+    border-radius: 1000px;
+    background: var(--red-100);
+    top: 2px;
+    left: 21px;
+    font-weight: var(--normal);
+    font-size: 0.8rem;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 export default Header;
