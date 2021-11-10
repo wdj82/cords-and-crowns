@@ -3,17 +3,16 @@ import Image from 'next/image';
 import Head from 'next/head';
 import styled from 'styled-components';
 
-import { Bold } from '../components/GlobalStyles';
 import { useCart } from '../hooks/useCart';
 import getOrderQuery from '../lib/getOrderQuery';
 import formatMoney from '../lib/formatMoney';
 
 function SuccessPage(order) {
     // clear out the cart on purchase success
-    const { setCart } = useCart();
+    const { clearCart } = useCart();
     useEffect(() => {
-        setCart({});
-    }, [setCart]);
+        clearCart();
+    }, [clearCart]);
 
     // check if order object is empty
     if (Object.keys(order).length === 0) {
@@ -98,6 +97,10 @@ const Product = styled.div`
 
 const Footer = styled.footer`
     padding: 16px;
+`;
+
+export const Bold = styled.span`
+    font-weight: var(--bold);
 `;
 
 export default SuccessPage;

@@ -1,8 +1,8 @@
 import { useSession, signIn, signOut, getSession } from 'next-auth/react';
+import styled from 'styled-components';
 
 import allOrdersQuery from '../lib/allOrdersQuery';
 import formatMoney from '../lib/formatMoney';
-import { Bold } from '../components/GlobalStyles';
 
 function OrdersPage({ orders }) {
     const { data: session, status } = useSession();
@@ -60,5 +60,9 @@ export async function getServerSideProps(ctx) {
     }
     return { props: { session } };
 }
+
+export const Bold = styled.span`
+    font-weight: var(--bold);
+`;
 
 export default OrdersPage;

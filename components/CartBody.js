@@ -12,16 +12,9 @@ import CartRemovedProducts from './CartRemovedProducts';
 
 function CartBody({ onDismiss }) {
     const [working, setWorking] = useState(false);
-    const { cart, removeFromCart } = useCart();
+    const { cart, total, removeFromCart } = useCart();
     const [removedProducts, setRemovedProducts] = useState([]);
     const slugs = Object.keys(cart);
-
-    const handleClick = async (e) => {
-        e.preventDefault();
-        setWorking(true);
-        await stripeCheckout(cart);
-        setWorking(false);
-    };
 
     // query for each product in the cart to check if it's changed since being added
     const productQueries = useQueries(
@@ -46,20 +39,23 @@ function CartBody({ onDismiss }) {
         }
     }, [isLoading, productQueries, removeFromCart, removedProducts]);
 
+    const handleClick = async (e) => {
+        e.preventDefault();
+        setWorking(true);
+        await stripeCheckout(productQueries);
+        setWorking(false);
+    };
+
     // TODO: Spinner
     if (isLoading) return <h3>Loading...</h3>;
-
-    let total = 0;
 
     return (
         <Wrapper>
             {removedProducts.length > 0 && <CartRemovedProducts names={removedProducts} />}
             <Items>
-                {slugs.map((slug) => {
-                    const { price } = cart[slug];
-                    total += price;
-                    return <CartItem key={slug} slug={slug} />;
-                })}
+                {slugs.map((slug) => (
+                    <CartItem key={slug} slug={slug} />
+                ))}
             </Items>
             {total > 0 ? (
                 <Checkout>

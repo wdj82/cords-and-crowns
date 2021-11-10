@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 
-import { Bold } from './GlobalStyles';
 import formatMoney from '../lib/formatMoney';
 import { useCart } from '../hooks/useCart';
 import UnstyledButton from './UnstyledButton';
@@ -45,6 +44,10 @@ const Info = styled.div`
     flex-direction: column;
     justify-content: center;
     padding: 8px;
+`;
+
+export const Bold = styled.span`
+    font-weight: var(--bold);
 `;
 
 export default CartItem;

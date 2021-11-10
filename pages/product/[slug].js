@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
 
 import styled from 'styled-components';
-import { Bold } from '../../components/GlobalStyles';
 import allSlugsQuery from '../../lib/allSlugsQuery';
 import getProductQuery from '../../lib/getProductQuery';
 import { useCart } from '../../hooks/useCart';
@@ -41,7 +40,7 @@ function SingleProductPage() {
     const buyNow = async (e) => {
         e.preventDefault();
         setWorking(true);
-        await stripeCheckout({ [slug]: { slug, name, price, image: images[0].url } });
+        await stripeCheckout([{ data }]);
         setWorking(false);
     };
 
@@ -168,6 +167,10 @@ const BuyButton = styled(Button)`
     &:focus {
         background: hsl(0, 80%, 50%);
     }
+`;
+
+export const Bold = styled.span`
+    font-weight: var(--bold);
 `;
 
 export default SingleProductPage;
