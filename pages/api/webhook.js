@@ -108,12 +108,13 @@ export default async (req, res) => {
         const smtp = nodemailer.createTransport({
             host: process.env.EMAIL_HOST,
             port: process.env.EMAIL_PORT,
+            secure: process.env.NODE_ENV !== 'development',
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASSWORD,
             },
         });
-        smtp.sendMail({
+        const message = await smtp.sendMail({
             to: email,
             from: 'admin@example.com',
             subject: 'Testing Email Sends',
@@ -123,6 +124,7 @@ export default async (req, res) => {
             `,
             html: htmlMessage,
         });
+        console.log(message);
         console.log('order email sent');
     } catch (error) {
         console.error('ERROR sending order email:', error);
