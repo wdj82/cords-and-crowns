@@ -3,6 +3,8 @@ import { buffer } from 'micro';
 import nodemailer from 'nodemailer';
 
 import { graphCMSCreateOrdersClient, gql } from '../../lib/graphCMSClient';
+import formatMoney from '../../lib/formatMoney';
+import createHTML from '../../lib/createHTML';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -42,6 +44,7 @@ export default async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(event.data.object.id, {
         expand: ['line_items.data.price.product', 'customer'],
     });
+
     const lineItems = session.line_items.data;
     const { email } = session.customer;
     const slugs = [];
@@ -81,6 +84,7 @@ export default async (req, res) => {
     // console.log('slugs:', slugs);
 
     // create or update an account with the new order and make bought products unavailable
+    let id = null;
     try {
         const {
             upsertAccount: { orders },
@@ -122,18 +126,25 @@ export default async (req, res) => {
                 slugs,
             },
         );
+        id = orders.id;
         console.log('created order:', orders);
         console.log(`updated ${count} product${count > 1 ? 's' : ''}`);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'There was a problem creating the order on the backend' });
+        return;
     }
+
+    const { Order: order } = data[0];
+
+    const htmlMessage = createHTML(email, id, order, session.customer.created);
 
     try {
         // send email of order details
         const smtp = nodemailer.createTransport({
             host: process.env.EMAIL_HOST,
             port: process.env.EMAIL_PORT,
+            secure: process.env.NODE_ENV !== 'development',
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASSWORD,
@@ -143,11 +154,15 @@ export default async (req, res) => {
             to: email,
             from: 'admin@example.com',
             subject: 'Testing Email Sends',
-            html: '<p>Sending you order details<p>',
+            text: `
+            Thank you for your order! Order #: ${id}. Total: ${formatMoney(order.total)}. 
+            We will email you when your order is shipped. Thank you for shopping from us!
+            `,
+            html: htmlMessage,
         });
         console.log('order email sent');
     } catch (error) {
-        console.error('ERROR sending order email: ', error);
+        console.error('ERROR sending order email:', error);
     }
 
     res.json({ message: 'success' });

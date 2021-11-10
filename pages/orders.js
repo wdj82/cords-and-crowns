@@ -1,8 +1,8 @@
 import { useSession, signIn, signOut, getSession } from 'next-auth/react';
-import styled from 'styled-components';
 
 import allOrdersQuery from '../lib/allOrdersQuery';
 import formatMoney from '../lib/formatMoney';
+import { Bold } from '../components/GlobalStyles';
 
 function OrdersPage({ orders }) {
     const { data: session, status } = useSession();
@@ -48,7 +48,7 @@ function OrdersPage({ orders }) {
 export async function getServerSideProps(ctx) {
     const session = await getSession(ctx);
     if (session) {
-        // we're authenticated get the order history
+        // authenticated get the order history for this email
         const { orders } = await allOrdersQuery(session.user.email);
         // console.log(orders);
         return {
@@ -60,9 +60,5 @@ export async function getServerSideProps(ctx) {
     }
     return { props: { session } };
 }
-
-const Bold = styled.span`
-    font-weight: var(--bold);
-`;
 
 export default OrdersPage;

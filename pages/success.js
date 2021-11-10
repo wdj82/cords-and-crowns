@@ -15,9 +15,17 @@ function SuccessPage(order) {
         setCart({});
     }, [setCart]);
 
+    // check if order object is empty
     if (Object.keys(order).length === 0) {
         return (
-            <Header>There was a problem loading your order details. You should receive an email invoice soon.</Header>
+            <>
+                <Head>
+                    <title>Cords&amp;Crowns</title>
+                </Head>
+                <Header>
+                    There was a problem loading your order details. You should receive an email invoice soon.
+                </Header>
+            </>
         );
     }
 
