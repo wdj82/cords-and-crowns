@@ -29,11 +29,10 @@ function CartBody({ onDismiss }) {
     // if so remove from the cart
     useEffect(() => {
         if (!isLoading) {
-            productQueries.forEach((product) => {
-                if (!product.data.product.available) {
-                    removeFromCart(product.data.product.slug);
-                    // names.push(currQuery.data.product.name);
-                    setRemovedProducts([...removedProducts, product.data.product.name]);
+            productQueries.forEach(({ data: { product } }) => {
+                if (!product.available) {
+                    removeFromCart(product.slug);
+                    setRemovedProducts([...removedProducts, product.name]);
                 }
             });
         }
@@ -42,7 +41,7 @@ function CartBody({ onDismiss }) {
     const handleClick = async (e) => {
         e.preventDefault();
         setWorking(true);
-        await stripeCheckout(productQueries);
+        await stripeCheckout(slugs);
         setWorking(false);
     };
 
@@ -57,7 +56,7 @@ function CartBody({ onDismiss }) {
                     <CartItem key={slug} slug={slug} />
                 ))}
             </Items>
-            {total > 0 ? (
+            {total ? (
                 <Checkout>
                     <div>
                         Subtotal ({slugs.length} item{slugs.length > 1 && 's'}): <Money>{formatMoney(total)}</Money>
