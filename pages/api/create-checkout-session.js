@@ -1,11 +1,17 @@
 import Stripe from 'stripe';
 
+import getMultiProductsQuery from '../../lib/getMultiProductsQuery';
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async (req, res) => {
     try {
-        const { products, successURL, cancelURL } = req.body;
+        const { slugs, successURL, cancelURL } = req.body;
 
+        // get current product data
+        const { products } = await getMultiProductsQuery(slugs);
+
+        // stripe settings for the products
         const lineItems = products.map((product) => ({
             price_data: {
                 unit_amount: product.price,
@@ -15,13 +21,14 @@ export default async (req, res) => {
                     metadata: {
                         productSlug: product.slug,
                     },
-                    images: [product.image],
+                    images: [product.images[0].url],
                 },
             },
             quantity: 1,
             tax_rates: [process.env.STRIPE_TAX_RATE],
         }));
 
+        // create a stripe session the user will be redirected to
         const session = await stripe.checkout.sessions.create({
             success_url: `${successURL}?id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${cancelURL}`,
@@ -32,6 +39,7 @@ export default async (req, res) => {
             },
             line_items: lineItems,
         });
+
         res.status(201).json(session);
     } catch (error) {
         console.error(error);
