@@ -7,7 +7,7 @@ import ProductGrid from '../components/ProductGrid';
 import allProductsQuery from '../lib/allProductsQuery';
 import allSlugsQuery from '../lib/allSlugsQuery';
 import { QUERIES } from '../util/constants';
-import sendEmailTest from '../lib/sendEmailTest';
+// import sendEmailTest from '../lib/sendEmailTest';
 
 function ProductsPage() {
     return (
@@ -30,12 +30,12 @@ function ProductsPage() {
                 <Spacer />
                 <ProductGrid />
             </MainColumn>
-            <LeftColumn>
+            {/* <LeftColumn>
                 SideBar
                 <button type='button' onClick={sendEmailTest}>
                     send email
                 </button>
-            </LeftColumn>
+            </LeftColumn> */}
         </Wrapper>
     );
 }
@@ -60,9 +60,9 @@ const Wrapper = styled.div`
     align-items: baseline;
 `;
 
-const LeftColumn = styled.div`
-    flex-basis: 248px;
-`;
+// const LeftColumn = styled.div`
+//     flex-basis: 248px;
+// `;
 
 const MainColumn = styled.div`
     flex: 1;
