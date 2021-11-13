@@ -14,10 +14,10 @@ function Header() {
     const [showCart, setShowCart] = useState(false);
     const [showContact, setShowContact] = useState(false);
     const { cart } = useCart();
-    const [cartTotal, setCartTotal] = useState(0);
+    const [itemsInCart, setItemsInCart] = useState(0);
 
     useEffect(() => {
-        setCartTotal(Object.keys(cart).length);
+        setItemsInCart(Object.keys(cart).length);
     }, [cart]);
 
     return (
@@ -35,7 +35,7 @@ function Header() {
                 <IconButton onClick={() => setShowCart(true)}>
                     <VisuallyHidden>Open Cart</VisuallyHidden>
                     <Icon id='shopping-cart' />
-                    {cartTotal > 0 && <CartNumber>{cartTotal}</CartNumber>}
+                    {itemsInCart > 0 && <CartNumber>{itemsInCart}</CartNumber>}
                 </IconButton>
 
                 <IconButton onClick={() => setShowContact(true)}>

@@ -90,7 +90,7 @@ export default async (req, res) => {
             upsertAccount: { orders },
             updateManyProducts: { count },
         } = await upsertAccountMutation(data, email, slugs);
-        id = orders.id;
+        id = orders[0].id;
         console.log('created order:', orders);
         console.log(`updated ${count} product${count > 1 ? 's' : ''}`);
     } catch (error) {
@@ -115,7 +115,7 @@ export default async (req, res) => {
         });
         const message = await smtp.sendMail({
             to: email,
-            from: 'admin@example.com',
+            from: process.env.EMAIL_FROM,
             subject: 'Testing Email Sends',
             text: `
             Thank you for your order! Order #: ${id}. Total: ${formatMoney(order.total)}. 
