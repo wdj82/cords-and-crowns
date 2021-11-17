@@ -14,7 +14,7 @@
     "license": "ISC",
     "dependencies": {
         "@next-auth/prisma-adapter": "^0.5.2-next.19",
-        "@prisma/client": "^3.4.1",
+        "@prisma/client": "^3.5.0",
         "@reach/dialog": "^0.16.2",
         "@stripe/stripe-js": "^1.20.3",
         "graphql": "^15.5.3",
@@ -40,6 +40,6 @@
         "eslint-plugin-jsx-a11y": "^6.4.1",
         "eslint-plugin-react": "^7.25.1",
         "eslint-plugin-react-hooks": "^4.2.0",
-        "prisma": "^3.4.1"
+        "prisma": "^3.5.0"
     }
 }
