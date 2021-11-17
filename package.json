@@ -13,7 +13,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@next-auth/prisma-adapter": "^0.5.2-next.19",
         "@prisma/client": "^3.5.0",
         "@reach/dialog": "^0.16.2",
         "@stripe/stripe-js": "^1.20.3",
@@ -21,7 +20,6 @@
         "graphql-request": "^3.5.0",
         "micro": "^9.3.4",
         "next": "^11.1.2",
-        "next-auth": "^4.0.0-beta.7",
         "nodemailer": "^6.7.0",
         "nprogress": "^0.2.0",
         "react": "^17.0.2",
