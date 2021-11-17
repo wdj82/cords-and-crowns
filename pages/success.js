@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import { useEffect } from 'react';
 import Image from 'next/image';
 import Head from 'next/head';

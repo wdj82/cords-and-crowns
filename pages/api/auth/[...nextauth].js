@@ -31,9 +31,6 @@ export default NextAuth({
     ],
     adapter: PrismaAdapter(prisma),
     secret: process.env.TOKEN_SECRET,
-    session: {
-        jwt: true,
-        maxAge: 30 * 24 * 60 * 60,
-    },
+
     debug: true,
 });
