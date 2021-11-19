@@ -8,7 +8,7 @@ const nextConfig = {
         domains: ['media.graphcms.com'],
     },
     generateBuildId: () => 'build',
-    webpack5: (config, { isServer }) => {
+    webpack: (config, { isServer }) => {
         if (isServer) {
             config.externals.push('_http_common');
         }
