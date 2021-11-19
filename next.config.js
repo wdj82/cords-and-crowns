@@ -14,6 +14,7 @@ const nextConfig = {
         }
         return config;
     },
+    target: 'experimental-serverless-trace',
 };
 
 module.exports = nextConfig;
