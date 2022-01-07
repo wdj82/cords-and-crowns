@@ -34,13 +34,13 @@ function Header() {
 
                 <IconButton onClick={() => setShowCart(true)}>
                     <VisuallyHidden>Open Cart</VisuallyHidden>
-                    <Icon id='shopping-cart' />
+                    <Icon id='shopping-cart' size='48' />
                     {itemsInCart > 0 && <CartNumber>{itemsInCart}</CartNumber>}
                 </IconButton>
 
                 <IconButton onClick={() => setShowContact(true)}>
                     <VisuallyHidden>Contact Information</VisuallyHidden>
-                    <Icon id='contact' />
+                    <Icon id='contact' size='48' />
                 </IconButton>
             </Actions>
             {showCart && <Cart isOpen={showCart} onDismiss={() => setShowCart(false)} />}
@@ -51,15 +51,18 @@ function Header() {
 
 const MainHeader = styled.header`
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 18px 32px;
     border-bottom: 1px solid var(--gray-300);
+    background: var(--gray-100);
 `;
 
 const Actions = styled.div`
+    position: absolute;
     display: flex;
-    gap: 56px;
+    gap: 32px;
+    right: 32px;
 `;
 
 const IconButton = styled(UnstyledButton)`
