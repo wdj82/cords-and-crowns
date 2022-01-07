@@ -10,6 +10,7 @@ import Page from '../components/Page';
 import { CartContext, useCartState } from '../hooks/useCart';
 
 import '../util/nprogress.css';
+import { CategoryProvider } from '../hooks/useCategory';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
@@ -35,9 +36,11 @@ function MyApp({ Component, pageProps }) {
                 <GlobalStyles />
                 <SessionProvider session={pageProps.session}>
                     <CartContext.Provider value={cart}>
-                        <Page>
-                            <Component {...pageProps} />
-                        </Page>
+                        <CategoryProvider>
+                            <Page>
+                                <Component {...pageProps} />
+                            </Page>
+                        </CategoryProvider>
                     </CartContext.Provider>
                     <ReactQueryDevtools />
                 </SessionProvider>
