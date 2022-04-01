@@ -5,7 +5,7 @@ const nextConfig = {
     reactStrictMode: true,
     images: {
         // domains: ['res.cloudinary.com'],
-        domains: ['media.graphcms.com'],
+        domains: ['media.graphassets.com'],
     },
     generateBuildId: () => 'build',
 };
