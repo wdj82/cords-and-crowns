@@ -8,6 +8,13 @@ const nextConfig = {
         domains: ['media.graphassets.com'],
     },
     generateBuildId: () => 'build',
+    webpack: (config, { isServer }) => {
+        if (isServer) {
+            config.externals.push('_http_common');
+        }
+        return config;
+    },
+    target: 'experimental-serverless-trace',
 };
 
 module.exports = nextConfig;
