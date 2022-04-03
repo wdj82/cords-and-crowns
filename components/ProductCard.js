@@ -15,7 +15,7 @@ function ProductCard({ name, price, slug, images, available }) {
                     </ImageWrapper>
                     <Row>
                         <p>{name}</p>
-                        {available ? <p>{formatMoney(price)}</p> : <SoldOut>Sold Out</SoldOut>}
+                        {available ? <p>{formatMoney(price)}</p> : <SoldOut>Sold</SoldOut>}
                     </Row>
                 </Wrapper>
             </Anchor>
