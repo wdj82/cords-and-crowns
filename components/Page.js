@@ -54,7 +54,7 @@ const Main = styled.div`
 const Wrapper = styled.div`
     display: flex;
     flex-direction: row-reverse;
-    align-items: baseline;
+    align-items: flex-start;
 `;
 
 const LeftColumn = styled.div`

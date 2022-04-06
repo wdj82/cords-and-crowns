@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useState, useContext } from 'react';
 
 const CategoryContext = createContext();
 
@@ -6,13 +6,8 @@ function useCategoryState() {
     const [category, setCategory] = useState('All Products');
 
     function changeCategory(newCategory) {
-        console.log('new category: ', newCategory);
         setCategory(newCategory);
     }
-
-    useEffect(() => {
-        console.log(category);
-    }, [category]);
 
     return { category, changeCategory };
 }

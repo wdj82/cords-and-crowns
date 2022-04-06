@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
@@ -9,12 +8,7 @@ import ProductCard from './ProductCard';
 
 function ProductGrid() {
     const { category } = useCategory();
-    console.log('product grid', category);
     const { data, error, isLoading } = useQuery('products', () => allProductsQuery());
-
-    useEffect(() => {
-        console.log(category);
-    }, [category]);
 
     //  TODO: Make loading component
     if (isLoading || !data) return <p>Loading...</p>;
