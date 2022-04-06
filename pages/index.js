@@ -1,21 +1,37 @@
-import Head from 'next/head';
-import { useState } from 'react';
+// import Head from 'next/head';
+// import { useState } from 'react';
 import { QueryClient, dehydrate } from 'react-query';
 import styled from 'styled-components';
 
 import ProductGrid from '../components/ProductGrid';
-import SideBar from '../components/SideBar';
+// import SideBar from '../components/SideBar';
 // import Select from '../components/Select';
 import allProductsQuery from '../lib/allProductsQuery';
 import allSlugsQuery from '../lib/allSlugsQuery';
 import { QUERIES } from '../util/constants';
+import { useCategory } from '../hooks/useCategory';
+
 // import sendEmailTest from '../lib/sendEmailTest';
 
 function ProductsPage() {
-    // const [currentPage] = useState('All Products');
+    const { category } = useCategory();
 
     return (
-        <ProductGrid />
+        <>
+            <TitleWrapper>
+                <div>
+                    <Title>{category}</Title>
+                </div>
+                {/* <SortFilterWrapper>
+                        <Select label='Sort' value='newest'>
+                            <option value='newest'>Newest Releases</option>
+                            <option value='price'>Price</option>
+                        </Select>
+                    </SortFilterWrapper> */}
+            </TitleWrapper>
+            <Spacer />
+            <ProductGrid />
+        </>
         // <Wrapper>
         //     <Head>
         //         <title>Cords &amp; Crowns</title>
@@ -60,22 +76,7 @@ export async function getStaticProps() {
     };
 }
 
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: baseline;
-`;
-
-const LeftColumn = styled.div`
-    flex-basis: 248px;
-    font-size: 1.5rem;
-`;
-
-const MainColumn = styled.div`
-    flex: 1;
-`;
-
-const Header = styled.header`
+const TitleWrapper = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: baseline;
@@ -85,6 +86,32 @@ const Header = styled.header`
         padding-bottom: 0px;
     }
 `;
+
+// const Wrapper = styled.div`
+//     display: flex;
+//     flex-direction: row-reverse;
+//     align-items: baseline;
+// `;
+
+// const LeftColumn = styled.div`
+//     flex-basis: 248px;
+//     font-size: 1.5rem;
+// `;
+
+// const MainColumn = styled.div`
+//     flex: 1;
+// `;
+
+// const Header = styled.header`
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: baseline;
+
+//     @media ${QUERIES.phone} {
+//         padding: 32px;
+//         padding-bottom: 0px;
+//     }
+// `;
 
 const Title = styled.h2`
     font-size: 1.5rem;

@@ -15,18 +15,18 @@ function Page({ children }) {
                     <title>Cords &amp; Crowns</title>
                 </Head>
                 <MainColumn>
-                    <TitleWrapper>
-                        <div>
-                            <Title>All Products</Title>
-                        </div>
-                        {/* <SortFilterWrapper>
+                    {/* <TitleWrapper> */}
+                    {/* <div>
+                            <Title>{category}</Title>
+                        </div> */}
+                    {/* <SortFilterWrapper>
                         <Select label='Sort' value='newest'>
                             <option value='newest'>Newest Releases</option>
                             <option value='price'>Price</option>
                         </Select>
                     </SortFilterWrapper> */}
-                    </TitleWrapper>
-                    <Spacer />
+                    {/* </TitleWrapper> */}
+                    {/* <Spacer /> */}
                     {/* <ProductGrid /> */}
                     <Main>{children}</Main>
                 </MainColumn>
@@ -66,35 +66,35 @@ const MainColumn = styled.div`
     flex: 1;
 `;
 
-const TitleWrapper = styled.header`
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
+// const TitleWrapper = styled.header`
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: baseline;
 
-    @media ${QUERIES.phone} {
-        padding: 32px;
-        padding-bottom: 0px;
-    }
-`;
+//     @media ${QUERIES.phone} {
+//         padding: 32px;
+//         padding-bottom: 0px;
+//     }
+// `;
 
-const Title = styled.h2`
-    font-size: 1.5rem;
-    font-weight: var(--medium);
-`;
+// const Title = styled.h2`
+//     font-size: 1.5rem;
+//     font-weight: var(--medium);
+// `;
 
 // const SortFilterWrapper = styled.div``;
 
-const Spacer = styled.span`
-    display: block;
-    width: 32px;
-    min-width: 32px;
-    height: 32px;
-    min-height: 32px;
+// const Spacer = styled.span`
+//     display: block;
+//     width: 32px;
+//     min-width: 32px;
+//     height: 32px;
+//     min-height: 32px;
 
-    @media ${QUERIES.phone} {
-        height: 16px;
-        min-height: 16px;
-    }
-`;
+//     @media ${QUERIES.phone} {
+//         height: 16px;
+//         min-height: 16px;
+//     }
+// `;
 
 export default Page;

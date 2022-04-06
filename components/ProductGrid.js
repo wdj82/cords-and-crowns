@@ -8,13 +8,13 @@ import { QUERIES } from '../util/constants';
 import ProductCard from './ProductCard';
 
 function ProductGrid() {
-    const [currentCategory] = useCategory();
-    console.log(currentCategory);
+    const { category } = useCategory();
+    console.log('product grid', category);
     const { data, error, isLoading } = useQuery('products', () => allProductsQuery());
 
     useEffect(() => {
-        console.log(currentCategory);
-    }, [currentCategory]);
+        console.log(category);
+    }, [category]);
 
     //  TODO: Make loading component
     if (isLoading || !data) return <p>Loading...</p>;
@@ -23,10 +23,10 @@ function ProductGrid() {
     let products = data?.products;
 
     // console.log(products);
-    if (currentCategory !== 'All Products') {
+    if (category !== 'All Products') {
         // only show products that match the current category
         const currentProducts = products.filter(
-            (product) => product.categories.filter((categories) => categories.name === currentCategory).length > 0,
+            (product) => product.categories.filter((categories) => categories.name === category).length > 0,
         );
         console.log(currentProducts);
         products = currentProducts;
