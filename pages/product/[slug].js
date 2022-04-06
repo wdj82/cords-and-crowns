@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
-import { dehydrate, QueryClient, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 
 import styled from 'styled-components';
-import allSlugsQuery from '../../lib/allSlugsQuery';
+// import allSlugsQuery from '../../lib/allSlugsQuery';
 import getProductQuery from '../../lib/getProductQuery';
 import { useCart } from '../../hooks/useCart';
 import stripeCheckout from '../../lib/stripeCheckout';
@@ -89,24 +89,24 @@ function SingleProductPage() {
     );
 }
 
-export async function getStaticProps({ params }) {
-    const queryClient = new QueryClient();
-    await queryClient.prefetchQuery(['product', params.slug], () => getProductQuery(params.slug));
-    return {
-        props: {
-            dehydratedState: dehydrate(queryClient),
-        },
-        revalidate: 60,
-    };
-}
+// export async function getStaticProps({ params }) {
+//     const queryClient = new QueryClient();
+//     await queryClient.prefetchQuery(['product', params.slug], () => getProductQuery(params.slug));
+//     return {
+//         props: {
+//             dehydratedState: dehydrate(queryClient),
+//         },
+//         revalidate: 60,
+//     };
+// }
 
-export async function getStaticPaths() {
-    const data = await allSlugsQuery();
-    const paths = data?.products.map((product) => ({
-        params: { slug: product.slug },
-    }));
-    return { paths, fallback: false };
-}
+// export async function getStaticPaths() {
+//     const data = await allSlugsQuery();
+//     const paths = data?.products.map((product) => ({
+//         params: { slug: product.slug },
+//     }));
+//     return { paths, fallback: false };
+// }
 
 const Header = styled.header`
     padding: 32px;
