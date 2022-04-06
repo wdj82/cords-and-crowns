@@ -1,9 +1,14 @@
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
 
 const CategoryContext = createContext();
 
 export function CategoryProvider({ children }) {
     const [category, setCategory] = useState('All Products');
+
+    useEffect(() => {
+        console.log(category);
+    }, [category]);
+
     return <CategoryContext.Provider value={[category, setCategory]}>{children}</CategoryContext.Provider>;
 }
 
