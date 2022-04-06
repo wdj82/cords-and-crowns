@@ -1,23 +1,17 @@
-import { useEffect } from 'react';
 import { useQuery } from 'react-query';
+import { useRouter } from 'next/router';
+import styled from 'styled-components';
+
 import { useCategory } from '../hooks/useCategory';
 import getAllCategories from '../lib/getAllCategories';
 import UnstyledButton from './UnstyledButton';
 
-// TODO: highlight current category
-// hover effect for each one
-// styling
 // media queries
-// move category desc into ProductGrid
 
 function SideBar() {
-    const [currentCategory, setCurrentCategory] = useCategory();
-    console.log(currentCategory);
+    const router = useRouter();
+    const { category, changeCategory } = useCategory();
     const { data, error, isLoading } = useQuery('categories', () => getAllCategories());
-
-    useEffect(() => {
-        console.log(currentCategory);
-    }, [currentCategory]);
 
     //  TODO: Make loading component
     if (isLoading || !data) return <p>Loading...</p>;
@@ -25,18 +19,38 @@ function SideBar() {
 
     const categories = data?.categories;
 
+    function handleClick(newCategory) {
+        if (router.pathname !== '/') {
+            router.push('/');
+        }
+        changeCategory(newCategory);
+    }
+
     return (
-        <ul>
-            <li>
-                <UnstyledButton onClick={() => setCurrentCategory('All Products')}>All Products</UnstyledButton>
-            </li>
-            {categories.map((category) => (
-                <li key={category.name}>
-                    <UnstyledButton onClick={() => setCurrentCategory(category.name)}>{category.name}</UnstyledButton>
-                </li>
+        <CategoryList>
+            <CategoryItem isCurrent={category === 'All Products'}>
+                <UnstyledButton onClick={() => handleClick('All Products')}>All Products</UnstyledButton>
+            </CategoryItem>
+            {categories.map((categoryInfo) => (
+                <CategoryItem key={categoryInfo.name} isCurrent={categoryInfo.name === category}>
+                    <UnstyledButton onClick={() => handleClick(categoryInfo.name)}>{categoryInfo.name}</UnstyledButton>
+                </CategoryItem>
             ))}
-        </ul>
+        </CategoryList>
     );
 }
+
+const CategoryList = styled.ul`
+    padding: 16px;
+`;
+
+const CategoryItem = styled.li`
+    color: ${(p) => (p.isCurrent ? 'red' : 'black')};
+
+    margin-top: 8px;
+    &:hover {
+        background: var(--gray-100);
+    }
+`;
 
 export default SideBar;
