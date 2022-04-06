@@ -96,7 +96,7 @@ export async function getStaticProps({ params }) {
         props: {
             dehydratedState: dehydrate(queryClient),
         },
-        revalidate: 10,
+        revalidate: 60,
     };
 }
 
@@ -105,7 +105,7 @@ export async function getStaticPaths() {
     const paths = data?.products.map((product) => ({
         params: { slug: product.slug },
     }));
-    return { paths, fallback: false };
+    return { paths, fallback: 'blocking' };
 }
 
 const Header = styled.header`
