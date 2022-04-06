@@ -8,8 +8,8 @@ import { QUERIES } from '../util/constants';
 import ProductCard from './ProductCard';
 
 function ProductGrid() {
-    const { category } = useCategory();
-    console.log('product grid', category);
+    const [currentCategory] = useCategory();
+    // console.log(currentCategory);
     const { data, error, isLoading } = useQuery('products', () => allProductsQuery());
 
     useEffect(() => {
@@ -21,14 +21,13 @@ function ProductGrid() {
     if (error) return <p>ERROR: {error.message}</p>;
 
     let products = data?.products;
-
     // console.log(products);
-    if (category !== 'All Products') {
+    if (currentCategory !== 'All Products') {
         // only show products that match the current category
         const currentProducts = products.filter(
-            (product) => product.categories.filter((categories) => categories.name === category).length > 0,
+            (product) => product.categories.filter((categories) => categories.name === currentCategory).length > 0,
         );
-        console.log(currentProducts);
+        // console.log(currentProducts);
         products = currentProducts;
     }
 
