@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
@@ -8,21 +9,26 @@ import ProductCard from './ProductCard';
 
 function ProductGrid() {
     const [currentCategory] = useCategory();
-    // console.log(currentCategory);
+    console.log(currentCategory);
     const { data, error, isLoading } = useQuery('products', () => allProductsQuery());
+
+    useEffect(() => {
+        console.log(currentCategory);
+    }, [currentCategory]);
 
     //  TODO: Make loading component
     if (isLoading || !data) return <p>Loading...</p>;
     if (error) return <p>ERROR: {error.message}</p>;
 
     let products = data?.products;
+
     // console.log(products);
     if (currentCategory !== 'All Products') {
         // only show products that match the current category
         const currentProducts = products.filter(
             (product) => product.categories.filter((categories) => categories.name === currentCategory).length > 0,
         );
-        // console.log(currentProducts);
+        console.log(currentProducts);
         products = currentProducts;
     }
 

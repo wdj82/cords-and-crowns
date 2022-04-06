@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { useCategory } from '../hooks/useCategory';
 import getAllCategories from '../lib/getAllCategories';
@@ -11,8 +12,12 @@ import UnstyledButton from './UnstyledButton';
 
 function SideBar() {
     const [currentCategory, setCurrentCategory] = useCategory();
-    // console.log(currentCategory);
+    console.log(currentCategory);
     const { data, error, isLoading } = useQuery('categories', () => getAllCategories());
+
+    useEffect(() => {
+        console.log(currentCategory);
+    }, [currentCategory]);
 
     //  TODO: Make loading component
     if (isLoading || !data) return <p>Loading...</p>;
