@@ -22,7 +22,7 @@ function ProductGrid() {
         const currentProducts = products.filter(
             (product) => product.categories.filter((categories) => categories.name === category).length > 0,
         );
-        console.log(currentProducts);
+        // console.log(currentProducts);
         products = currentProducts;
     }
 

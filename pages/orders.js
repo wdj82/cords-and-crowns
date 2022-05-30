@@ -6,8 +6,8 @@ import formatMoney from '../lib/formatMoney';
 
 function OrdersPage({ orders }) {
     const { data: session, status } = useSession();
-    console.log({ session, status });
-    console.log(orders);
+    // console.log({ session, status });
+    // console.log(orders);
 
     if (status === 'authenticated') {
         return (

@@ -16,7 +16,7 @@ export const config = {
 
 export default async (req, res) => {
     if (req.method !== 'POST') {
-        console.log('not a post');
+        // console.log('not a post');
         res.status(405).json({ message: 'Method not allowed' });
         return;
     }
