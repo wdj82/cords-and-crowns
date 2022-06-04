@@ -48,6 +48,8 @@ function SingleProductPage() {
         <>
             <Head>
                 <title>Cords&amp;Crowns | {name}</title>
+                <meta name='description' content={`${description}`} />
+                <meta property='og:title' content={`${name} - Cords and Crowns`} />
             </Head>
             <Header>
                 <h1>{name}</h1>

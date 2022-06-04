@@ -39,6 +39,10 @@ class MyDocument extends Document {
                         rel='stylesheet'
                     />
                     <link rel='shortcut icon' href='/images/favicon.ico' />
+                    <meta
+                        name='description'
+                        content='Handmade Day of the Dead themed items including: Cords, Flower Crowns, Jewelry, Jewelry Displays, Paper-weights, Decorative Boxes, Teacher Themed Signs'
+                    />
                 </Head>
                 <body>
                     <Main />
