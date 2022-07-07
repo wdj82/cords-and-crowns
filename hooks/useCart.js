@@ -50,5 +50,9 @@ export function useCartState() {
 }
 
 export function useCart() {
-    return useContext(CartContext);
+    const context = useContext(CartContext);
+    if (context === undefined) {
+        throw new Error('useCart must be used within a CartContext provider');
+    }
+    return context;
 }

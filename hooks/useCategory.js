@@ -21,7 +21,7 @@ export function CategoryProvider({ children }) {
 export function useCategory() {
     const context = useContext(CategoryContext);
     if (context === undefined) {
-        throw new Error('useCategory must be used within a CategoryProvider');
+        throw new Error('useCategory must be used within a CategoryContext Provider');
     }
     return context;
 }
