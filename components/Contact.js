@@ -1,4 +1,4 @@
-import { DialogOverlay, DialogContent } from '@reach/dialog';
+import { DialogOverlay, DialogContent } from './Modal';
 import styled, { keyframes } from 'styled-components';
 
 import Icon from './Icon';
@@ -90,11 +90,16 @@ const Title = styled.h2`
 
 const CloseButton = styled(UnstyledButton)`
     position: absolute;
-    top: -40px;
-    left: 0;
-    color: white;
+    top: 16px;
+    right: 16px;
+    color: var(--gray-700);
     width: 48px;
     height: 48px;
+
+    &:hover,
+    &:focus {
+        color: var(--black);
+    }
 `;
 
 const TextInfo = styled.div`

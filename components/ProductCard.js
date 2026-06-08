@@ -8,23 +8,21 @@ import { QUERIES } from '../util/constants';
 
 function ProductCard({ name, price, slug, images, available }) {
     return (
-        <Link href={`/product/${slug}`} passHref>
-            <Anchor>
-                <Wrapper>
-                    <ImageWrapper>
-                        <ProductImage loader={imageLoader} src={images[0]?.url} alt={name} width={500} height={375} />
-                    </ImageWrapper>
-                    <Row>
-                        <p>{name}</p>
-                        {available ? <p>{formatMoney(price)}</p> : <SoldOut>Sold</SoldOut>}
-                    </Row>
-                </Wrapper>
-            </Anchor>
-        </Link>
+        <Anchor href={`/product/${slug}`}>
+            <Wrapper>
+                <ImageWrapper>
+                    <ProductImage loader={imageLoader} src={images[0]?.url} alt={name} width={500} height={375} />
+                </ImageWrapper>
+                <Row>
+                    <p>{name}</p>
+                    {available ? <p>{formatMoney(price)}</p> : <SoldOut>Sold</SoldOut>}
+                </Row>
+            </Wrapper>
+        </Anchor>
     );
 }
 
-const Anchor = styled.a`
+const Anchor = styled(Link)`
     text-decoration: none;
 
     &:visited {

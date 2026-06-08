@@ -3,17 +3,17 @@
  */
 const nextConfig = {
     reactStrictMode: true,
+    compiler: {
+        styledComponents: true,
+    },
     images: {
-        domains: ['media.graphassets.com', 'us-east-1.graphassets.com'],
+        // images are served straight from Hygraph via lib/imageLoader.js (custom loader),
+        // so the built-in optimizer/allowlist is bypassed; patterns kept for clarity.
+        remotePatterns: [
+            { protocol: 'https', hostname: '**.graphassets.com' },
+            { protocol: 'https', hostname: 'media.graphassets.com' },
+        ],
     },
-    generateBuildId: () => 'build',
-    webpack: (config, { isServer }) => {
-        if (isServer) {
-            config.externals.push('_http_common');
-        }
-        return config;
-    },
-    target: 'experimental-serverless-trace',
 };
 
 module.exports = nextConfig;

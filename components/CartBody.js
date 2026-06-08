@@ -68,11 +68,9 @@ function CartBody({ onDismiss }) {
                         >
                             Contact to Buy
                         </BuyButton>
-                        <Link href='/'>
-                            <Button type='button' onClick={onDismiss}>
-                                Continue Shopping
-                            </Button>
-                        </Link>
+                        <Button as={Link} href='/' onClick={onDismiss}>
+                            Continue Shopping
+                        </Button>
                     </Buttons>
                 </Checkout>
             ) : (

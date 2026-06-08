@@ -40,7 +40,7 @@ function SingleProductPage() {
     return (
         <>
             <Head>
-                <title>Cords&amp;Crowns | {name}</title>
+                <title>{`Cords&Crowns | ${name}`}</title>
                 <meta name='description' content={`${description}`} />
                 <meta property='og:title' content={`${name} - Cords and Crowns`} />
             </Head>

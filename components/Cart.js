@@ -1,10 +1,9 @@
-import { DialogOverlay, DialogContent } from '@reach/dialog';
+import { DialogOverlay, DialogContent } from './Modal';
 import styled, { keyframes } from 'styled-components';
 
 import Icon from './Icon';
 import UnstyledButton from './UnstyledButton';
 import VisuallyHidden from './VisuallyHidden';
-import { QUERIES } from '../util/constants';
 import CartBody from './CartBody';
 
 function Cart({ isOpen, onDismiss }) {
@@ -84,13 +83,13 @@ const Header = styled.header`
 
 const CloseButton = styled(UnstyledButton)`
     position: absolute;
-    top: 0;
-    left: -48px;
-    color: white;
+    top: 16px;
+    right: 16px;
+    color: var(--gray-700);
 
-    @media ${QUERIES.phone} {
-        color: black;
-        left: 0%;
+    &:hover,
+    &:focus {
+        color: var(--black);
     }
 `;
 const Title = styled.h2`

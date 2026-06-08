@@ -5,11 +5,9 @@ import UnstyledButton from './UnstyledButton';
 function Logo() {
     return (
         <Wrapper>
-            <Link href='/'>
-                <UnstyledButton>
-                    <Header>Cords and Crowns</Header>
-                </UnstyledButton>
-            </Link>
+            <UnstyledButton as={Link} href='/'>
+                <Header>Cords and Crowns</Header>
+            </UnstyledButton>
             <SubHeader>Hand Crafted Jewelry, Flower Crowns, and Themed Decor</SubHeader>
         </Wrapper>
     );
