@@ -11,8 +11,6 @@ import allSlugsQuery from '../lib/allSlugsQuery';
 import { QUERIES } from '../util/constants';
 import { useCategory } from '../hooks/useCategory';
 
-// import sendEmailTest from '../lib/sendEmailTest';
-
 function ProductsPage() {
     const { category } = useCategory();
 
@@ -32,33 +30,6 @@ function ProductsPage() {
             <Spacer />
             <ProductGrid />
         </>
-        // <Wrapper>
-        //     <Head>
-        //         <title>Cords &amp; Crowns</title>
-        //     </Head>
-        //     <MainColumn>
-        //         <Header>
-        //             <div>
-        //                 <Title>{currentPage}</Title>
-        //             </div>
-        //             {/* <SortFilterWrapper>
-        //                 <Select label='Sort' value='newest'>
-        //                     <option value='newest'>Newest Releases</option>
-        //                     <option value='price'>Price</option>
-        //                 </Select>
-        //             </SortFilterWrapper> */}
-        //         </Header>
-        //         <Spacer />
-        //         <ProductGrid />
-        //     </MainColumn>
-        //     <LeftColumn>
-        //         <SideBar />
-
-        //         {/* <button type='button' onClick={sendEmailTest}>
-        //             send email
-        //         </button> */}
-        //     </LeftColumn>
-        // </Wrapper>
     );
 }
 

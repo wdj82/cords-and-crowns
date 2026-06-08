@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider, Hydrate } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import NProgress from 'nprogress';
 import Router from 'next/router';
-import { SessionProvider } from 'next-auth/react';
 
 import GlobalStyles from '../components/GlobalStyles';
 import Page from '../components/Page';
@@ -34,16 +33,14 @@ function MyApp({ Component, pageProps }) {
         <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps.dehydratedState}>
                 <GlobalStyles />
-                <SessionProvider session={pageProps.session}>
-                    <CartContext.Provider value={cart}>
-                        <CategoryProvider>
-                            <Page>
-                                <Component {...pageProps} />
-                            </Page>
-                        </CategoryProvider>
-                    </CartContext.Provider>
-                    <ReactQueryDevtools />
-                </SessionProvider>
+                <CartContext.Provider value={cart}>
+                    <CategoryProvider>
+                        <Page>
+                            <Component {...pageProps} />
+                        </Page>
+                    </CategoryProvider>
+                </CartContext.Provider>
+                <ReactQueryDevtools />
             </Hydrate>
         </QueryClientProvider>
     );

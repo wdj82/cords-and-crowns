@@ -4,14 +4,13 @@ import styled from 'styled-components';
 import { useQueries } from 'react-query';
 
 import formatMoney from '../lib/formatMoney';
-import stripeCheckout from '../lib/stripeCheckout';
+import buildInquiryMailto from '../lib/buildInquiryMailto';
 import CartItem from './CartItem';
 import { useCart } from '../hooks/useCart';
 import getProductQuery from '../lib/getProductQuery';
 import CartRemovedProducts from './CartRemovedProducts';
 
 function CartBody({ onDismiss }) {
-    const [working, setWorking] = useState(false);
     const { cart, total, removeFromCart } = useCart();
     const [removedProducts, setRemovedProducts] = useState([]);
     const slugs = Object.keys(cart);
@@ -38,12 +37,11 @@ function CartBody({ onDismiss }) {
         }
     }, [isLoading, productQueries, removeFromCart, removedProducts]);
 
-    const handleClick = async (e) => {
-        e.preventDefault();
-        setWorking(true);
-        await stripeCheckout(slugs);
-        setWorking(false);
-    };
+    // build the email inquiry from the items currently in the cart
+    const inquiryItems = slugs.map((slug) => {
+        const { name, price } = cart[slug];
+        return { name, price, slug };
+    });
 
     // TODO: Spinner
     if (isLoading) return <h3>Loading...</h3>;
@@ -62,8 +60,13 @@ function CartBody({ onDismiss }) {
                         Subtotal ({slugs.length} item{slugs.length > 1 && 's'}): <Money>{formatMoney(total)}</Money>
                     </div>
                     <Buttons>
-                        <BuyButton type='button' onClick={handleClick} disabled={working}>
-                            Check Out
+                        <BuyButton
+                            as='a'
+                            href={buildInquiryMailto(inquiryItems)}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                        >
+                            Contact to Buy
                         </BuyButton>
                         <Link href='/'>
                             <Button type='button' onClick={onDismiss}>
@@ -108,6 +111,12 @@ const Button = styled.button`
     border-radius: 8px;
     border: none;
     width: 120px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
 
     &:hover,
     &:focus {

@@ -32,10 +32,6 @@ function Page({ children }) {
                 </MainColumn>
                 <LeftColumn>
                     <SideBar />
-
-                    {/* <button type='button' onClick={sendEmailTest}>
-                    send email
-                </button> */}
                 </LeftColumn>
             </Wrapper>
             {/* <Main>{children}</Main> */}

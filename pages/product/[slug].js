@@ -8,13 +8,12 @@ import styled from 'styled-components';
 import allSlugsQuery from '../../lib/allSlugsQuery';
 import getProductQuery from '../../lib/getProductQuery';
 import { useCart } from '../../hooks/useCart';
-import stripeCheckout from '../../lib/stripeCheckout';
+import buildInquiryMailto from '../../lib/buildInquiryMailto';
 import Cart from '../../components/Cart';
 import formatMoney from '../../lib/formatMoney';
 import { QUERIES } from '../../util/constants';
 
 function SingleProductPage() {
-    const [working, setWorking] = useState(false);
     const [showCart, setShowCart] = useState(false);
     const { addToCart } = useCart();
     const router = useRouter();
@@ -36,13 +35,6 @@ function SingleProductPage() {
 
     const { name, price, description, images, available, slug } = data.product;
     // console.log({ name, price, description, images, available, slug });
-
-    const buyNow = async (e) => {
-        e.preventDefault();
-        setWorking(true);
-        await stripeCheckout([slug]);
-        setWorking(false);
-    };
 
     return (
         <>
@@ -81,8 +73,13 @@ function SingleProductPage() {
                     >
                         Add to Cart
                     </Button>
-                    <BuyButton type='button' onClick={buyNow} disabled={working || !available}>
-                        Buy Now
+                    <BuyButton
+                        as='a'
+                        href={buildInquiryMailto([{ name, price, slug }])}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                    >
+                        Contact to Buy
                     </BuyButton>
                 </Footer>
             )}
@@ -155,6 +152,9 @@ const Button = styled.button`
     background: var(--gray-700);
     border-radius: 8px;
     border: none;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
 
     &:hover,
     &:focus {
