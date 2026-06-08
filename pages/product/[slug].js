@@ -9,6 +9,7 @@ import allSlugsQuery from '../../lib/allSlugsQuery';
 import getProductQuery from '../../lib/getProductQuery';
 import { useCart } from '../../hooks/useCart';
 import buildInquiryMailto from '../../lib/buildInquiryMailto';
+import imageLoader from '../../lib/imageLoader';
 import Cart from '../../components/Cart';
 import formatMoney from '../../lib/formatMoney';
 import { QUERIES } from '../../util/constants';
@@ -57,7 +58,7 @@ function SingleProductPage() {
             <ImageWrapper>
                 {images.map((image) => (
                     <div key={image.fileName}>
-                        <ProductImage src={image.url} alt={name} width={500} height={375} />
+                        <ProductImage loader={imageLoader} src={image.url} alt={name} width={500} height={375} />
                     </div>
                 ))}
             </ImageWrapper>

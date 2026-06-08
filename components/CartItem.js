@@ -2,6 +2,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 
 import formatMoney from '../lib/formatMoney';
+import imageLoader from '../lib/imageLoader';
 import { useCart } from '../hooks/useCart';
 import UnstyledButton from './UnstyledButton';
 
@@ -12,7 +13,7 @@ function CartItem({ slug }) {
     return (
         <Wrapper>
             <div>
-                <Image src={image} alt={name} width={200} height={150} />
+                <Image loader={imageLoader} src={image} alt={name} width={200} height={150} />
             </div>
             <Info>
                 <div>{name}</div>

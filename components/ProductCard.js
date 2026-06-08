@@ -3,6 +3,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 
 import formatMoney from '../lib/formatMoney';
+import imageLoader from '../lib/imageLoader';
 import { QUERIES } from '../util/constants';
 
 function ProductCard({ name, price, slug, images, available }) {
@@ -11,7 +12,7 @@ function ProductCard({ name, price, slug, images, available }) {
             <Anchor>
                 <Wrapper>
                     <ImageWrapper>
-                        <ProductImage src={images[0]?.url} alt={name} width={500} height={375} />
+                        <ProductImage loader={imageLoader} src={images[0]?.url} alt={name} width={500} height={375} />
                     </ImageWrapper>
                     <Row>
                         <p>{name}</p>
