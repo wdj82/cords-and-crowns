@@ -1,0 +1,8 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+# Modern Next.js runtime (v5). Replaces the legacy "Essential Next.js"
+# plugin (v3) that forced the removed `serverless` target.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
